@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/livePlayersCardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="20dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:scrollbarThumbVertical="@mipmap/ic_launcher"
+    android:scrollbarTrackVertical="@color/colorPrimary"
+    android:theme="@style/CardView.Dark"
+    android:clickable="true"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="0dp"
+    card_view:cardPreventCornerOverlap="true">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/PlayerLiveLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:addStatesFromChildren="true"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="horizontal">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/PlayerClubLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/PlayerImageLayout">
+
+            <TextView
+                android:id="@+id/playerClub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ARSENAL"
+                android:textColor="#ffffff"
+                android:background="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginRight="16dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/PlayerImageLayout"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline_h_4"
+            tools:ignore="MissingConstraints">
+
+
+            <LinearLayout
+                android:id="@+id/PlayerImagelinearLayout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="8"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/playerImage"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="1dp"
+                    android:background="@drawable/player_image"
+                    app:autoSizeTextType="uniform" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/PlayInfoLinearLayout"
+            android:layout_width="220dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toEndOf="@+id/PlayerImageLayout"
+            app:layout_constraintTop_toTopOf="@+id/guideline_h_4"
+            tools:ignore="MissingConstraints">
+
+            <LinearLayout
+                android:layout_width="4dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.75"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/playerNameIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:fillViewport="true"
+                    card_view:srcCompat="@drawable/player_name_1" />
+
+
+                <ImageView
+                    android:id="@+id/playerPriceIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1.25"
+                    android:fillViewport="true"
+                    card_view:srcCompat="@drawable/player_money" />
+
+                <ImageView
+                    android:id="@+id/playerPointsIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1.25"
+                    android:fillViewport="true"
+                    card_view:srcCompat="@drawable/player_score" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/TimestampTextlinearLayout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="4dp"
+                android:layout_weight="8"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/playerName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:text="Daivd Luiz"
+                    android:textSize="20sp"
+                    android:gravity="left"
+                    android:textColor="@android:color/black"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintTop_toBottomOf="@+id/merchantName"
+                    android:layout_marginLeft="4dp" />
+
+                <TextView
+                    android:id="@+id/playerPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_margin="1dp"
+                    android:layout_weight="0.75"
+                    android:gravity="left"
+                    android:text="5.5"
+                    android:textColor="@android:color/black"
+                    app:autoSizeTextType="uniform" />
+  
+                <TextView
+                    android:id="@+id/playerTotalPoints"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_margin="1dp"
+                    android:layout_weight="0.75"
+                    android:text="50"
+                    android:gravity="left"
+                    android:textColor="@android:color/black"
+                    app:autoSizeTextType="uniform" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_v_96"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.96" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_h_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.04"
+            card_view:layout_constraintGuide_begin="9dp" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
