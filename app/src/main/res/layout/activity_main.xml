@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:id="@+id/main_coordinate"
+    android:background="@android:color/white"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:shimmer="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/shimmer_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:orientation="vertical">
+        <include layout="@layout/shimmer_main" />
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:visibility="gone"
+    android:id="@+id/relative_main"
+    tools:context=".Activities.MainActivity">
+
+
     <TextView
         android:id="@+id/appTitle"
         android:layout_width="match_parent"
@@ -46,8 +67,8 @@
         android:layout_height="50dp"
         android:focusedByDefault="false"
         android:layout_below="@+id/LeaderboardButton"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
+        android:spinnerMode="dialog"
+        android:tooltipText="SELECT A TEAM"
         android:layout_marginTop="10dp"/>
 
     <ScrollView
@@ -71,6 +92,6 @@
                 tools:listitem="@layout/players_adapter" />
         </LinearLayout>
     </ScrollView>
-
-
+    
 </RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

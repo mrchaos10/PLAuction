@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">PLAuction</string>
+    <string name="loginSuccess">Login Successful</string>
+    <string name="invalidCreds">Invalid Credentials</string>
+    <string name="unexpectedError">Unexpected Server Side Error</string>
+    <string name="unauthorized">Unauthorized</string>
+    <string name="invalidData">Invalid Data</string>
+    <string name="noConnection"> No internet connection! </string>
+    <string name="PasswordChange">Password Changed Successfully</string>
 </resources>
