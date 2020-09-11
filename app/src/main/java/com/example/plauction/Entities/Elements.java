@@ -7,6 +7,15 @@ import java.util.ArrayList;
 public class Elements {
     String photo;
     Integer total_points;
+    Integer team;
+
+    public Integer getTeam() {
+        return team;
+    }
+
+    public void setTeam(Integer team) {
+        this.team = team;
+    }
 
     public Elements(String photo, Integer total_points) {
         this.photo = photo;

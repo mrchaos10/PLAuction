@@ -72,7 +72,6 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_margin="1dp"
-                    android:background="@drawable/player_image"
                     app:autoSizeTextType="uniform" />
 
             </LinearLayout>

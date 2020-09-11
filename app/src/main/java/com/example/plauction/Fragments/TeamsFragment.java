@@ -13,14 +13,20 @@ import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.example.plauction.Activities.MainActivity;
+import com.example.plauction.Adapters.PlayersAdapter;
 import com.example.plauction.Adapters.TeamListSpinnerAdapter;
 import com.example.plauction.Common.CommonFunctions;
 import com.example.plauction.Entities.AuctionTeamsEntity;
+import com.example.plauction.Entities.BootstrapEntity;
+import com.example.plauction.Entities.Elements;
 import com.example.plauction.Entities.Playerinfo;
 import com.example.plauction.R;
 import com.example.plauction.RestClientImpl.RESTClientImplementation;
@@ -32,20 +38,38 @@ public class TeamsFragment extends Fragment {
 
     Context context;
     Activity activity;
+    private RecyclerView playerRecyclerView;
     private ShimmerFrameLayout shimmerFrameLayout;
+    private NestedScrollView playersNestedScrollView;
     private  View inflated_frag;
     private RelativeLayout relativeLayout;
     private Spinner spinner;
     private ArrayList<String> teamsList=new ArrayList<>();
     private ArrayList<ArrayList<Playerinfo>> teamPlayers=new ArrayList<>();
+    private ArrayList<Elements> elements;
+    private PlayersAdapter playersAdapter;
     private void loadData(){
         shimmerFrameLayout.startShimmer();
         shimmerFrameLayout.setVisibility(View.VISIBLE);
+        RESTClientImplementation.getBootstrapStatic(new BootstrapEntity.OnListLoad() {
+            @Override
+            public void onListLoaded(int code, BootstrapEntity bootstrapEntity, VolleyError volleyError) {
+                if(code == 200 && volleyError!=null){
+                    elements=bootstrapEntity.getElements();
+                }
+                else{
+                    shimmerFrameLayout.stopShimmer();
+                    shimmerFrameLayout.setVisibility(View.GONE);
+                    CommonFunctions.makeToast("No internet connectivity",context);
+                }
+        }
+        },context);
 
         RESTClientImplementation.getAuctionTeams(new AuctionTeamsEntity.OnListLoad() {
             @Override
             public void onListLoaded(int code, final AuctionTeamsEntity[] auctionTeamsEntities, VolleyError volleyError) {
                 teamsList.add("SELECT A TEAM");
+                teamPlayers.add(null);
                 if(code == 200 && volleyError!=null){
                     // Fetch teams
                     for(int i=0; i<auctionTeamsEntities.length; i++)
@@ -69,13 +93,18 @@ public class TeamsFragment extends Fragment {
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             String selectedTeamName = (String) parent.getItemAtPosition(position);
                             ArrayList<Playerinfo> selectedTeamPlayers= teamPlayers.get(position);
-                            if (position == 0)
-                                CommonFunctions.makeToast("PLEASE SELECT A TEAM",context);
+                            if (position == 0) {
+                                CommonFunctions.makeToast("PLEASE SELECT A TEAM", context);
+                            }
                             else {
                                 // SELECTION LOGIC MAKE POST VOLLEY
                                 Log.i("selected",selectedTeamName);
-                                Log.i("players",selectedTeamPlayers.toString());
-
+                                Log.i("players",selectedTeamPlayers.get(1).getPlayerId().toString());
+                                //Log.i("elements",elements.get(1).getTeam().toString());
+                                playersNestedScrollView.setVisibility(View.VISIBLE);
+                                playersAdapter = new PlayersAdapter(getActivity(),selectedTeamPlayers,elements);
+                                playerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                                playerRecyclerView.setAdapter(playersAdapter);
                             }
                         }
 
@@ -136,7 +165,8 @@ public class TeamsFragment extends Fragment {
         shimmerFrameLayout =(ShimmerFrameLayout)inflated_frag.findViewById(R.id.shimmer_details_frag);
         relativeLayout = (RelativeLayout)inflated_frag.findViewById(R.id.relative_detail_frag);
         spinner = inflated_frag.findViewById(R.id.spinnerTeamName);
-
+        playerRecyclerView=(RecyclerView) inflated_frag.findViewById(R.id.playersRecyclerView);
+        playersNestedScrollView=(NestedScrollView)inflated_frag.findViewById(R.id.playersNestedScrollView);
         // load Data
         loadData();
 
