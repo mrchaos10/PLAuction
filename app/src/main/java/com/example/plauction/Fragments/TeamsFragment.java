@@ -33,6 +33,7 @@ public class TeamsFragment extends Fragment {
     private ShimmerFrameLayout shimmerFrameLayout;
     private  View inflated_frag;
     private RelativeLayout relativeLayout;
+    private Spinner spinner;
     private ArrayList<String> teamsList=new ArrayList<>();
 
     private void loadData(){
@@ -52,6 +53,32 @@ public class TeamsFragment extends Fragment {
                     shimmerFrameLayout.stopShimmer();
                     shimmerFrameLayout.setVisibility(View.GONE);
                     relativeLayout.setVisibility(View.VISIBLE);
+                    // Initializing an ArrayAdapter
+                    TeamListSpinnerAdapter teamListSpinnerAdapter = new TeamListSpinnerAdapter(context,R.layout.team_spinner_item,teamsList, spinner);
+
+                    teamListSpinnerAdapter.setDropDownViewResource(R.layout.team_spinner_item);
+                    spinner.setAdapter(teamListSpinnerAdapter);
+                    int getDefaultPos = teamListSpinnerAdapter.getPosition("SELECT A TEAM");
+                    spinner.setSelection(getDefaultPos); // Default Message
+
+                    // Listener for Spinner item
+                    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            String selectedTeamName = (String) parent.getItemAtPosition(position);
+                            if (position == 0)
+                                CommonFunctions.makeToast("PLEASE SELECT A TEAM",context);
+                            else {
+                                // SELECTION LOGIC MAKE POST VOLLEY
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+
                     CommonFunctions.makeSnackBar("Teams Data Fetched",relativeLayout).show();
                 }else if(code == 700){
                     shimmerFrameLayout.stopShimmer();
@@ -102,38 +129,12 @@ public class TeamsFragment extends Fragment {
         inflated_frag = inflater.inflate(R.layout.fragment_details, container, false);
         shimmerFrameLayout =(ShimmerFrameLayout)inflated_frag.findViewById(R.id.shimmer_details_frag);
         relativeLayout = (RelativeLayout)inflated_frag.findViewById(R.id.relative_detail_frag);
+        spinner = inflated_frag.findViewById(R.id.spinnerTeamName);
 
         // load Data
         loadData();
-        // Get reference of widgets from XML layout
-        final Spinner spinner = (Spinner) inflated_frag.findViewById(R.id.spinnerTeamName);
 
 
-        // Initializing an ArrayAdapter
-        TeamListSpinnerAdapter teamListSpinnerAdapter = new TeamListSpinnerAdapter(context,R.layout.team_spinner_item,teamsList, spinner);
-
-        teamListSpinnerAdapter.setDropDownViewResource(R.layout.team_spinner_item);
-        spinner.setAdapter(teamListSpinnerAdapter);
-        int getDefaultPos = teamListSpinnerAdapter.getPosition("SELECT A TEAM");
-        spinner.setSelection(getDefaultPos); // Default Message
-
-        // Listener for Spinner item
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedTeamName = (String) parent.getItemAtPosition(position);
-                if (position == 0)
-                    CommonFunctions.makeToast("PLEASE SELECT A TEAM",context);
-                else {
-                    // SELECTION LOGIC MAKE POST VOLLEY
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         ((MainActivity)activity).onAdapterLoaded();
         return inflated_frag;
 
