@@ -16,10 +16,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 import com.example.plauction.Activities.MainActivity;
 import com.example.plauction.Adapters.TeamListSpinnerAdapter;
 import com.example.plauction.Common.CommonFunctions;
 import com.example.plauction.Entities.AuctionTeamsEntity;
+import com.example.plauction.Entities.Playerinfo;
 import com.example.plauction.R;
 import com.example.plauction.RestClientImpl.RESTClientImplementation;
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -35,7 +37,7 @@ public class TeamsFragment extends Fragment {
     private RelativeLayout relativeLayout;
     private Spinner spinner;
     private ArrayList<String> teamsList=new ArrayList<>();
-
+    private ArrayList<ArrayList<Playerinfo>> teamPlayers=new ArrayList<>();
     private void loadData(){
         shimmerFrameLayout.startShimmer();
         shimmerFrameLayout.setVisibility(View.VISIBLE);
@@ -48,14 +50,14 @@ public class TeamsFragment extends Fragment {
                     // Fetch teams
                     for(int i=0; i<auctionTeamsEntities.length; i++)
                     {
-                        teamsList.add(auctionTeamsEntities[i].getTeam_name().toUpperCase());
+                        teamsList.add(auctionTeamsEntities[i].getTeamName().toUpperCase());
+                        teamPlayers.add(auctionTeamsEntities[i].getPlayerInfo());
                     }
                     shimmerFrameLayout.stopShimmer();
                     shimmerFrameLayout.setVisibility(View.GONE);
                     relativeLayout.setVisibility(View.VISIBLE);
                     // Initializing an ArrayAdapter
                     TeamListSpinnerAdapter teamListSpinnerAdapter = new TeamListSpinnerAdapter(context,R.layout.team_spinner_item,teamsList, spinner);
-
                     teamListSpinnerAdapter.setDropDownViewResource(R.layout.team_spinner_item);
                     spinner.setAdapter(teamListSpinnerAdapter);
                     int getDefaultPos = teamListSpinnerAdapter.getPosition("SELECT A TEAM");
@@ -66,10 +68,14 @@ public class TeamsFragment extends Fragment {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             String selectedTeamName = (String) parent.getItemAtPosition(position);
+                            ArrayList<Playerinfo> selectedTeamPlayers= teamPlayers.get(position);
                             if (position == 0)
                                 CommonFunctions.makeToast("PLEASE SELECT A TEAM",context);
                             else {
                                 // SELECTION LOGIC MAKE POST VOLLEY
+                                Log.i("selected",selectedTeamName);
+                                Log.i("players",selectedTeamPlayers.toString());
+
                             }
                         }
 
