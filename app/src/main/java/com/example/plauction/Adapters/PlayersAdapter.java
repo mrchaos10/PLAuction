@@ -19,15 +19,17 @@ import com.example.plauction.Entities.Elements;
 import com.example.plauction.Entities.Playerinfo;
 import com.example.plauction.R;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHolder> {
     private List<Playerinfo> selectedTeamPlayers;
-    private List<Elements> elements;
+    private Map<Integer,Elements> elements;
     private Activity activity;
     private String[] teams=new String[]{"Arsenal","Aston Villa","Brighton","Burnley","Chelsea", "Crystal Palace","Everton","Fulham","Leicester","Leeds","Liverpool", "Man City","Man Utd","Newcastle United","Sheffield United","Southampton","Spurs","West Bromwich","West Ham","Wolves"};
-    public PlayersAdapter(Activity activity,List<Playerinfo> selectedTeamPlayers,List<Elements> elements){
+    public PlayersAdapter(Activity activity, List<Playerinfo> selectedTeamPlayers, Map<Integer,Elements> elements){
         this.activity=activity;
         this.elements=elements;
         this.selectedTeamPlayers=selectedTeamPlayers;
@@ -53,9 +55,8 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
         holder.playerTotalPoints.setText(element.getTotal_points().toString());
         holder.playerClub.setText(teams[element.getTeam()-1]);
         RequestOptions options = new RequestOptions()
-                .centerCrop()
-                .placeholder(R.mipmap.ic_launcher_round)
-                .error(R.mipmap.ic_launcher_round);
+                .placeholder(R.drawable.player_image)
+                .error(R.drawable.player_image);
         Glide.with(holder.playerImage.getContext()).load(Constants.PLAYER_IMAGE_URL+element.getPhoto().replace(".jpg",".png")).apply(options).into(holder.playerImage);
    }
 

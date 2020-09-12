@@ -32,7 +32,10 @@ import com.example.plauction.R;
 import com.example.plauction.RestClientImpl.RESTClientImplementation;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
+import java.security.Key;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TeamsFragment extends Fragment {
 
@@ -99,10 +102,14 @@ public class TeamsFragment extends Fragment {
                             else {
                                 // SELECTION LOGIC MAKE POST VOLLEY
                                 Log.i("selected",selectedTeamName);
-                                Log.i("players",selectedTeamPlayers.get(1).getPlayerId().toString());
+                                //Log.i("players",selectedTeamPlayers.get(1).getPlayerId().toString());
                                 //Log.i("elements",elements.get(1).getTeam().toString());
+                                Map<Integer,Elements> map = new HashMap<Integer,Elements>();
+                                for (Elements e : elements){
+                                    map.put(e.getId(),e);
+                                }
                                 playersNestedScrollView.setVisibility(View.VISIBLE);
-                                playersAdapter = new PlayersAdapter(getActivity(),selectedTeamPlayers,elements);
+                                playersAdapter = new PlayersAdapter(getActivity(),selectedTeamPlayers,map);
                                 playerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                                 playerRecyclerView.setAdapter(playersAdapter);
                             }

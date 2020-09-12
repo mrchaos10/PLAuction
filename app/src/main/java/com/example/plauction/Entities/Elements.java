@@ -8,6 +8,15 @@ public class Elements {
     String photo;
     Integer total_points;
     Integer team;
+    Integer id;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getTeam() {
         return team;
@@ -17,9 +26,11 @@ public class Elements {
         this.team = team;
     }
 
-    public Elements(String photo, Integer total_points) {
+    public Elements(String photo, Integer total_points,Integer team,Integer id) {
         this.photo = photo;
         this.total_points = total_points;
+        this.team=team;
+        this.id=id;
     }
 
     public String getPhoto() {
