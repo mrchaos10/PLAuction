@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="350dp"
+    android:layout_height="30dp"
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="20dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:scrollbarThumbVertical="@mipmap/ic_launcher"
+    android:scrollbarTrackVertical="@color/colorPrimary"
+    android:theme="@style/CardView.Dark"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="0dp"
+    card_view:cardPreventCornerOverlap="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/playerHistoryLayout"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:addStatesFromChildren="true"
+        android:layout_margin="5dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/gameweekID"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Gameweek"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints"
+            android:layout_marginLeft="20dp" />
+        <TextView
+            android:id="@+id/gameweekMins"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="Min"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:textSize="13sp"
+            app:layout_constraintStart_toEndOf="@id/gameweekID"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/gamweekGS"
+            android:layout_width="30dp"
+            android:layout_margin="10dp"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:maxLines="2"
+            android:minLines="2"
+            android:textColor="@android:color/black"
+            android:textSize="9sp"
+            android:text="GS"
+            app:autoSizeMaxTextSize="12sp"
+            app:autoSizeMinTextSize="10sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintStart_toEndOf="@id/gameweekMins"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/gameweekAssists"
+            android:layout_width="20dp"
+            android:layout_margin="10dp"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:maxLines="2"
+            android:minLines="2"
+            android:text="AS"
+            android:textColor="@android:color/black"
+            android:textSize="9sp"
+            app:autoSizeMaxTextSize="12sp"
+            app:autoSizeMinTextSize="10sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintStart_toEndOf="@id/gamweekGS"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/gameweekCS"
+            android:layout_width="20dp"
+            android:layout_margin="10dp"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:maxLines="2"
+            android:minLines="2"
+            android:text="CS"
+            android:textColor="@android:color/black"
+            android:textSize="9sp"
+            app:autoSizeMaxTextSize="12sp"
+            app:autoSizeMinTextSize="10sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintStart_toEndOf="@id/gameweekAssists"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/gameweekPoints"
+            android:layout_width="30dp"
+            android:layout_margin="70dp"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:maxLines="2"
+            android:minLines="2"
+            android:text="Pts"
+            android:textColor="@android:color/black"
+            android:textSize="9sp"
+            app:autoSizeMaxTextSize="12sp"
+            app:autoSizeMinTextSize="10sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintStart_toEndOf="@id/gameweekCS"
+            tools:ignore="MissingConstraints" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

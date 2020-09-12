@@ -10,15 +10,25 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.plauction.Common.CommonFunctions;
 import com.example.plauction.Constants.Constants;
+import com.example.plauction.Entities.BootstrapEntity;
+import com.example.plauction.Entities.ElementEntity;
 import com.example.plauction.Entities.Elements;
+import com.example.plauction.Entities.History;
 import com.example.plauction.Entities.Playerinfo;
 import com.example.plauction.R;
+import com.example.plauction.RestClientImpl.RESTClientImplementation;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +37,7 @@ import java.util.Map;
 public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHolder> {
     private List<Playerinfo> selectedTeamPlayers;
     private Map<Integer,Elements> elements;
+    private GameWeekAdapter gameWeekAdapter;
     private Activity activity;
     private String[] teams=new String[]{"Arsenal","Aston Villa","Brighton","Burnley","Chelsea", "Crystal Palace","Everton","Fulham","Leicester","Leeds","Liverpool", "Man City","Man Utd","Newcastle United","Sheffield United","Southampton","Spurs","West Bromwich","West Ham","Wolves"};
     public PlayersAdapter(Activity activity, List<Playerinfo> selectedTeamPlayers, Map<Integer,Elements> elements){
@@ -74,16 +85,54 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
         private TextView playerName, playerPrice, playerTotalPoints,playerClub;
         private CardView cardView;
         private ImageView playerImage;
-
+        private View playerGwViewHeader;
+        private ConstraintLayout playersLiveLayout;
+        private NestedScrollView playersGwDetails;
+        private RecyclerView playersGwRecyclerView;
+        private ArrayList<History> history;
         public ViewHolder(View itemView) {
             super(itemView);
+            playerGwViewHeader=(View) itemView.findViewById(R.id.playerDetailsTitle);
+            playersGwDetails=(NestedScrollView) itemView.findViewById(R.id.playerGameweekDetailsLayout);
+            playersGwRecyclerView=(RecyclerView) itemView.findViewById(R.id.playerGameweekDetailsRecyclerView);
             cardView=(CardView) itemView.findViewById(R.id.livePlayersCardView);
+            playersLiveLayout=(ConstraintLayout) itemView.findViewById(R.id.PlayerLiveLayout);
             playerImage=(ImageView) itemView.findViewById(R.id.playerImage);
             playerName=(TextView) itemView.findViewById(R.id.playerName);
             playerPrice=(TextView) itemView.findViewById(R.id.playerPrice);
             playerClub=(TextView) itemView.findViewById(R.id.playerClub);
             playerTotalPoints=(TextView) itemView.findViewById(R.id.playerTotalPoints);
             playerClub=(TextView) itemView.findViewById(R.id.playerClub);
+            playersLiveLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View view) {
+                    Log.i("clicking","working");
+                    final Playerinfo player = selectedTeamPlayers.get(getAdapterPosition());
+                    RESTClientImplementation.getElementSummary(new ElementEntity.OnListLoad() {
+                        @Override
+                        public void onListLoaded(int code, ElementEntity elementEntity, VolleyError volleyError) {
+                            if(code == 200 && volleyError!=null){
+                                history=elementEntity.getHistory();
+                                Log.i("history",history.get(0).getMinutes().toString());
+                                if(playerGwViewHeader.getVisibility()==View.GONE && playersGwDetails.getVisibility()==View.GONE && history!=null){
+                                    playerGwViewHeader.setVisibility(View.VISIBLE);
+                                    playersGwDetails.setVisibility(View.VISIBLE);
+                                    gameWeekAdapter = new GameWeekAdapter(activity,history);
+                                    playersGwRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+                                    playersGwRecyclerView.setAdapter(gameWeekAdapter);
+                                }
+                                else{
+                                    playerGwViewHeader.setVisibility(View.GONE);
+                                    playersGwDetails.setVisibility(View.GONE);
+                                }
+                            }
+                            else{
+                                Log.i("Failed","Network Error");
+                            }
+                        }
+                    },view.getContext(),player.getPlayerId());
+                }
+            });
 
         }
     }

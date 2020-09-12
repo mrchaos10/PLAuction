@@ -16,6 +16,7 @@ import com.example.plauction.Constants.Constants;
 import com.example.plauction.Entities.AuctionTeamsEntity;
 import com.example.plauction.Entities.BootstrapEntity;
 
+import com.example.plauction.Entities.ElementEntity;
 import com.example.plauction.Entities.Elements;
 import com.google.gson.Gson;
 
@@ -67,6 +68,36 @@ public class RESTClientImplementation {
         jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(1000,1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(jsonObjectRequest);
     };
+
+    //REST CALL FOR ELEMENT SUMMARY
+    public static void getElementSummary(final ElementEntity.OnListLoad onListLoad, Context context, Integer playerID){
+        requestQueue = VolleySingleton.getInstance(context).getRequestQueue();
+        String url = BASE_PLAYER_INFO_URL+playerID+'/';
+
+        JsonBaseRequest jsonObjectRequest = new JsonBaseRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Gson gson = new Gson();
+                ElementEntity elementEntity = null;
+                elementEntity=gson.fromJson(response.toString(), ElementEntity.class);
+                onListLoad.onListLoaded(200,elementEntity,new VolleyError());
+            }
+
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Error", String.valueOf(error));
+                if (isNetworkError(error)) {
+                    onListLoad.onListLoaded(700, null, new VolleyError());
+                }
+            }
+
+        });
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(1000,1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(jsonObjectRequest);
+    };
+
     //REST Call for normal login
     public static void getAuctionTeams(final AuctionTeamsEntity.OnListLoad onListLoad, Context context){
         requestQueue = VolleySingleton.getInstance(context).getRequestQueue();

@@ -194,5 +194,29 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <include
+        android:id="@+id/playerDetailsTitle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="150dp"
+        android:layout_marginLeft="20dp"
+        android:visibility="gone"
+        layout="@layout/playergameweekdetails_layout" />
 
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/playerGameweekDetailsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:visibility="gone"
+        android:layout_marginTop="180dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/playerGameweekDetailsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/playergameweekdetails_layout" />
+
+
+    </androidx.core.widget.NestedScrollView>
 </androidx.cardview.widget.CardView>
