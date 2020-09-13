@@ -145,17 +145,13 @@ public class TeamsFragment extends Fragment {
         spinner = inflated_frag.findViewById(R.id.spinnerTeamName);
         playerRecyclerView=(RecyclerView) inflated_frag.findViewById(R.id.playersRecyclerView);
         playersNestedScrollView=(NestedScrollView)inflated_frag.findViewById(R.id.playersNestedScrollView);
-        // load Data
-        //loadData();
-        String elementsString=getArguments().getString("ELEMENTS");
-        Type listType = new TypeToken<List<Elements>>() {}.getType();
-        elements=gson.fromJson(elementsString, listType);
 
         String auctionTeamsString=getArguments().getString("AUCTION_TEAMS");
-        listType = new TypeToken<List<AuctionTeamsEntity>>() {}.getType();
+        Type listType = new TypeToken<List<AuctionTeamsEntity>>() {}.getType();
         auctionTeamsEntitiesList=gson.fromJson(auctionTeamsString,listType);
         auctionTeamsEntities = new AuctionTeamsEntity[auctionTeamsEntitiesList.size()];
         auctionTeamsEntities=  auctionTeamsEntitiesList.toArray(auctionTeamsEntities);
+        // Load Data
         loadData();
 
         ((MainActivity)activity).onAdapterLoaded();

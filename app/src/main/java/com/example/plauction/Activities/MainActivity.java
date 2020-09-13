@@ -120,12 +120,8 @@ public class MainActivity extends AppCompatActivity {
                     for (Elements e : elements){
                         map.put(e.getId(),e);
                     }
+                    // Populate player id to info map
                     CommonFunctions.setPlayerIdToElementMap_(map);
-                    // Set element in bundle
-                    // Convert elements to string
-                    Type listType = new TypeToken<List<Elements>>() {}.getType();
-                    String elementsJson=gson.toJson(elements,listType);
-                    bundle.putString("ELEMENTS", elementsJson);
                     // This is a synchronous call as we need both data for our app
                     RESTClientImplementation.getAuctionTeams(new AuctionTeamsEntity.OnListLoad() {
                         @Override
