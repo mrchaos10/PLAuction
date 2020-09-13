@@ -113,7 +113,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
                         public void onListLoaded(int code, ElementEntity elementEntity, VolleyError volleyError) {
                             if(code == 200 && volleyError!=null){
                                 history=elementEntity.getHistory();
-                                Log.i("history",history.get(0).getMinutes().toString());
+//                                Log.i("history",history.get(0).getMinutes().toString());
                                 if(playerGwViewHeader.getVisibility()==View.GONE && playersGwDetails.getVisibility()==View.GONE && history!=null){
                                     playerGwViewHeader.setVisibility(View.VISIBLE);
                                     playersGwDetails.setVisibility(View.VISIBLE);

@@ -1,5 +1,6 @@
 package com.example.plauction.Adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ public class GameWeekAdapter extends RecyclerView.Adapter<GameWeekAdapter.ViewHo
         return holder;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull GameWeekAdapter.ViewHolder holder, int position) {
         History gameWeek = history.get(position);
@@ -39,11 +41,11 @@ public class GameWeekAdapter extends RecyclerView.Adapter<GameWeekAdapter.ViewHo
 //        Log.i("image",element.getPhoto());
 //        Log.i("points",element.getTotal_points().toString());
         holder.gameWeekID.setText("GAMEWEEK "+gameWeek.getRound());
-        //holder.gameWeekMP.setText(gameWeek.getMinutes());
-        holder.gameWeekGS.setText(gameWeek.getGoals_scored());
-        holder.gameWeekAS.setText(gameWeek.getAssists());
-        holder.gameWeekCS.setText(gameWeek.getClean_sheets());
-        holder.gameweekPts.setText(gameWeek.getTotal_points());
+        holder.gameWeekMP.setText(gameWeek.getMinutes()+"");
+        holder.gameWeekGS.setText(gameWeek.getGoals_scored()+"");
+        holder.gameWeekAS.setText(gameWeek.getAssists()+"");
+        holder.gameWeekCS.setText(gameWeek.getClean_sheets()+"");
+        holder.gameweekPts.setText(gameWeek.getTotal_points()+"");
     }
 
     @Override
