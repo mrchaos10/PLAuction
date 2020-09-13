@@ -108,6 +108,9 @@ public class TeamsFragment extends Fragment {
                                 for (Elements e : elements){
                                     map.put(e.getId(),e);
                                 }
+
+                                CommonFunctions.setPlayerIdToElementMap_(map);
+                                Log.i("SUM", CommonFunctions.getTeamTotalSum(selectedTeamPlayers)+"");
                                 playersNestedScrollView.setVisibility(View.VISIBLE);
                                 playersAdapter = new PlayersAdapter(getActivity(),selectedTeamPlayers,map);
                                 playerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

@@ -20,12 +20,18 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.example.plauction.Constants.Constants;
+import com.example.plauction.Entities.Elements;
+import com.example.plauction.Entities.Playerinfo;
 import com.example.plauction.R;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 
 public class CommonFunctions {
 
+    private  static Map<Integer, Elements> playerIdToElementMap_;
 
     // General toasts ..............
 
@@ -101,6 +107,35 @@ public class CommonFunctions {
         }
 
         return message;
+    }
+
+    public static Map<Integer, Elements> getPlayerIdToElementMap_() {
+        return playerIdToElementMap_;
+    }
+
+    public static void setPlayerIdToElementMap_(Map<Integer, Elements> playerIdToElementMap_) {
+        CommonFunctions.playerIdToElementMap_ = playerIdToElementMap_;
+    }
+
+
+    public static int getTeamTotalSum(ArrayList<Playerinfo> playerinfoArrayList)
+    {
+        if(playerIdToElementMap_ == null || playerIdToElementMap_.size() == 0)
+            return 0;
+
+        int sum =0;
+        for(Playerinfo player: playerinfoArrayList)
+        {
+            if(!playerIdToElementMap_.containsKey(player.getPlayerId()))
+            {
+                sum+=0;
+            }
+            else
+            {
+                sum+=playerIdToElementMap_.get(player.getPlayerId()).getTotal_points();
+            }
+        }
+        return sum;
     }
 
 }

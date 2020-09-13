@@ -3,12 +3,14 @@ package com.example.plauction.Entities;
 import com.android.volley.VolleyError;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Elements {
     String photo;
     Integer total_points;
     Integer team;
     Integer id;
+
 
     public Integer getId() {
         return id;
