@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="350dp"
+    android:layout_width="320dp"
     android:layout_height="30dp"
     android:layout_marginStart="20dp"
     android:layout_marginEnd="20dp"
@@ -18,7 +18,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/playerHistoryLayout"
-        android:layout_width="350dp"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:addStatesFromChildren="true"
         android:layout_margin="5dp"
@@ -104,7 +104,7 @@
         <TextView
             android:id="@+id/gameweekPoints"
             android:layout_width="30dp"
-            android:layout_margin="70dp"
+            android:layout_margin="10dp"
             android:layout_height="20dp"
             android:gravity="center"
             android:maxLines="2"

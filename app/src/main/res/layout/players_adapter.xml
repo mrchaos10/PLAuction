@@ -196,18 +196,17 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
     <include
         android:id="@+id/playerDetailsTitle"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="match_parent"
         android:layout_marginTop="150dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="10dp"
         android:visibility="gone"
         layout="@layout/playergameweekdetails_layout" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/playerGameweekDetailsLayout"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="match_parent"
-        android:layout_gravity="left"
         android:visibility="gone"
         android:layout_marginTop="180dp">
 
@@ -215,6 +214,7 @@
             android:id="@+id/playerGameweekDetailsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="left"
             tools:listitem="@layout/playergameweekdetails_layout" />
 
 

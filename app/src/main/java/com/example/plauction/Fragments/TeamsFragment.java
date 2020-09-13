@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,6 +46,7 @@ public class TeamsFragment extends Fragment {
 
     Context context;
     Activity activity;
+    private TextView teamPoints;
     private RecyclerView playerRecyclerView;
     private ShimmerFrameLayout shimmerFrameLayout;
     private NestedScrollView playersNestedScrollView;
@@ -86,7 +88,8 @@ public class TeamsFragment extends Fragment {
                 }
                 else {
                     // SELECTION LOGIC MAKE POST VOLLEY
-                    Log.i("SUM", CommonFunctions.getTeamTotalSum(selectedTeamPlayers)+"");
+                    //Log.i("SUM", CommonFunctions.getTeamTotalSum(selectedTeamPlayers)+"");
+                    teamPoints.setText(selectedTeamName+" Points : "+CommonFunctions.getTeamTotalSum(selectedTeamPlayers));
                     playersNestedScrollView.setVisibility(View.VISIBLE);
                     playersAdapter = new PlayersAdapter(getActivity(),selectedTeamPlayers,CommonFunctions.getPlayerIdToElementMap_());
                     playerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -145,7 +148,7 @@ public class TeamsFragment extends Fragment {
         spinner = inflated_frag.findViewById(R.id.spinnerTeamName);
         playerRecyclerView=(RecyclerView) inflated_frag.findViewById(R.id.playersRecyclerView);
         playersNestedScrollView=(NestedScrollView)inflated_frag.findViewById(R.id.playersNestedScrollView);
-
+        teamPoints=(TextView) inflated_frag.findViewById(R.id.TeamPoints);
         String auctionTeamsString=getArguments().getString("AUCTION_TEAMS");
         Type listType = new TypeToken<List<AuctionTeamsEntity>>() {}.getType();
         auctionTeamsEntitiesList=gson.fromJson(auctionTeamsString,listType);
