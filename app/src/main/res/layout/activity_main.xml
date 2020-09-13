@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="190dp"
                 android:fitsSystemWindows="true"
-                app:contentScrim="#c43117"
+                app:contentScrim="#6F3742"
                 android:background="@android:color/white"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
                 app:titleEnabled="false">
@@ -84,8 +84,7 @@
 
                         <TextView
                             android:id="@+id/page_title"
-                            android:layout_width="0dp"
-                            android:layout_weight="4"
+                            android:layout_width="wrap_content"
                             android:text="It's PL Baby"
                             android:textSize="22dp"
                             android:fontFamily="@font/raleway"
@@ -93,6 +92,14 @@
                             android:textStyle="bold"
                             android:textColor="@color/background"
                             android:layout_height="match_parent" />
+                        <ImageView
+                            android:id="@+id/tab_image"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_height="30dp"
+                            android:fitsSystemWindows="true"
+                            android:scaleType="fitXY"
+                            />
 
                     </LinearLayout>
                 </androidx.appcompat.widget.Toolbar>

@@ -3,22 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.facebook.shimmer.ShimmerFrameLayout android:id="@+id/shimmer_details_frag"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:orientation="vertical"
-        >
-
-        <include layout="@layout/shimmer_main" />
-
-    </com.facebook.shimmer.ShimmerFrameLayout>
-
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
         android:id="@+id/relative_detail_frag"
         tools:context=".Activities.MainActivity">
 
@@ -28,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="Team Points : 0"
-            android:textSize="22sp"
+            android:textSize="30sp"
             android:gravity="center"
             android:textColor="#000000"
             android:layout_marginStart="30dp"
@@ -75,7 +63,7 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="30dp"
-                    tools:listitem="@layout/players_adapter" />
+                    tools:listitem="@layout/adapter_players" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

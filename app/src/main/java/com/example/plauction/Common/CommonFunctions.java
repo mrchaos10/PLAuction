@@ -2,6 +2,7 @@ package com.example.plauction.Common;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -15,17 +16,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.example.plauction.Adapters.TeamCompositionAdapter;
 import com.example.plauction.Constants.Constants;
+import com.example.plauction.Entities.AuctionTeamsEntity;
 import com.example.plauction.Entities.Elements;
 import com.example.plauction.Entities.Playerinfo;
+import com.example.plauction.Entities.TeamCompositionEntity;
 import com.example.plauction.R;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -136,6 +142,67 @@ public class CommonFunctions {
             }
         }
         return sum;
+    }
+
+    public static AuctionTeamsEntity filterPlayers(AuctionTeamsEntity auctionTeamsEntity, int elementType)
+    {
+        ArrayList<Playerinfo> playerinfos = auctionTeamsEntity.getPlayerInfo();
+        ArrayList<Playerinfo> filteredPlayerInfos= new ArrayList<>();
+
+        for(Playerinfo p: playerinfos){
+            if(playerIdToElementMap_.containsKey(p.getPlayerId()) && playerIdToElementMap_.get(p.getPlayerId()).getElement_type() == elementType)
+                filteredPlayerInfos.add(p);
+        }
+
+        return new AuctionTeamsEntity(auctionTeamsEntity.getTeamName(), filteredPlayerInfos,null);
+
+    }
+
+
+    public static AlertDialog getTeamComposition(final AuctionTeamsEntity auctionTeamsEntity, final Context context, int composition){
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View dialogView = layoutInflater.inflate(R.layout.alert_teamcomp, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setView(dialogView);
+
+        TextView rank = (TextView)dialogView.findViewById(R.id.temcomp_rank);
+        TextView title =(TextView)dialogView.findViewById(R.id.diaglog_title);
+        title.setText(auctionTeamsEntity.getTeamName());
+        GridView gridView = (GridView)dialogView.findViewById(R.id.temcomp_grid);
+
+        AuctionTeamsEntity fwds = filterPlayers(auctionTeamsEntity,4);
+        AuctionTeamsEntity mids = filterPlayers(auctionTeamsEntity,3);
+        AuctionTeamsEntity defs = filterPlayers(auctionTeamsEntity,2);
+        AuctionTeamsEntity gks  = filterPlayers(auctionTeamsEntity,1);
+
+        ArrayList<TeamCompositionEntity> teamCompositionEntities = new ArrayList<>();
+
+        TeamCompositionEntity fwdEntity = new TeamCompositionEntity("FORWARDS", getTeamTotalSum(fwds.getPlayerInfo()));
+        teamCompositionEntities.add(fwdEntity);
+        TeamCompositionEntity midsEntity = new TeamCompositionEntity("MIDFIELDERS", getTeamTotalSum(mids.getPlayerInfo()));
+        teamCompositionEntities.add(midsEntity);
+        TeamCompositionEntity defsEntity = new TeamCompositionEntity("DEFENDERS", getTeamTotalSum(defs.getPlayerInfo()));
+        teamCompositionEntities.add(defsEntity);
+        TeamCompositionEntity gksEntity = new TeamCompositionEntity("KEEPERS", getTeamTotalSum(gks.getPlayerInfo()));
+        teamCompositionEntities.add(gksEntity);
+
+        TeamCompositionAdapter teamCompositionAdapter = new TeamCompositionAdapter(context,teamCompositionEntities);
+        gridView.setAdapter(teamCompositionAdapter);
+
+        Button confirm = dialogView.findViewById(R.id.confirm_reg);
+
+        rank.setText("RANK - " + composition + ", POINTS - " + getTeamTotalSum(auctionTeamsEntity.getPlayerInfo()));
+
+        final AlertDialog alertDialog = alertDialogBuilder.create();
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+
+        return alertDialog;
     }
 
 }

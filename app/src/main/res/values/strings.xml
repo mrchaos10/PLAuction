@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PLAuction</string>
+    <string name="app_name">PL Auction</string>
     <string name="loginSuccess">Login Successful</string>
     <string name="invalidCreds">Invalid Credentials</string>
     <string name="unexpectedError">Unexpected Server Side Error</string>

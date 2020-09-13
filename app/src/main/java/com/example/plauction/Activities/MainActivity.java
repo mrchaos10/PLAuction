@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> teamsList=new ArrayList<>();
     ArrayList<Elements> elements;
     private Bundle bundle = new Bundle();
+    private ImageView imageView;
     private boolean isPagersSet=false;
 
     private void loadViewPager()
@@ -92,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+                imageView.setImageResource(tab.getPosition() == 0 ? R.drawable.football : R.drawable.trophy );
             }
 
             @Override
@@ -181,6 +184,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         coordinatorLayout = findViewById(R.id.main_coordinate);
         shimmerFrameLayout = findViewById(R.id.shimmer_main);
+        imageView = findViewById(R.id.tab_image);
+        imageView.setImageResource(R.drawable.football);
 
         appBarLayout = (AppBarLayout) findViewById(R.id.htab_appbar);
         shimmerFrameLayout.startShimmer();
@@ -202,5 +207,6 @@ public class MainActivity extends AppCompatActivity {
         shimmerFrameLayout.stopShimmer();
         shimmerFrameLayout.setVisibility(View.GONE);
         coordinatorLayout.setVisibility(View.VISIBLE);
+
     }
 }

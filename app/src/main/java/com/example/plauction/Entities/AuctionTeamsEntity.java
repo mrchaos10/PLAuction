@@ -1,6 +1,7 @@
 package com.example.plauction.Entities;
 
 import com.android.volley.VolleyError;
+import com.example.plauction.Common.CommonFunctions;
 
 import java.util.ArrayList;
 
@@ -42,6 +43,11 @@ public class AuctionTeamsEntity {
 
     public void setTransferEntities(ArrayList<TransferEntity> transferEntities) {
         this.transferEntities = transferEntities;
+    }
+
+    public int getTotalPoints()
+    {
+        return CommonFunctions.getTeamTotalSum(getPlayerInfo());
     }
 
 }

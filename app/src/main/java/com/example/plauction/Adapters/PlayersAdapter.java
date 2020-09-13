@@ -18,9 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.plauction.Common.CommonFunctions;
 import com.example.plauction.Constants.Constants;
-import com.example.plauction.Entities.BootstrapEntity;
 import com.example.plauction.Entities.ElementEntity;
 import com.example.plauction.Entities.Elements;
 import com.example.plauction.Entities.History;
@@ -29,7 +27,6 @@ import com.example.plauction.R;
 import com.example.plauction.RestClientImpl.RESTClientImplementation;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +46,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
     @NonNull
     @Override
     public PlayersAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.players_adapter, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_players, parent, false);
         PlayersAdapter.ViewHolder holder = new PlayersAdapter.ViewHolder(view);
         return holder;
     }

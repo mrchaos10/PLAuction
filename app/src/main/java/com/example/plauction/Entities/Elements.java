@@ -10,7 +10,15 @@ public class Elements {
     Integer total_points;
     Integer team;
     Integer id;
+    Integer element_type;
 
+    public Integer getElement_type() {
+        return element_type;
+    }
+
+    public void setElement_type(Integer element_type) {
+        this.element_type = element_type;
+    }
 
     public Integer getId() {
         return id;
@@ -28,11 +36,12 @@ public class Elements {
         this.team = team;
     }
 
-    public Elements(String photo, Integer total_points,Integer team,Integer id) {
+    public Elements(String photo, Integer total_points,Integer team,Integer id, Integer element_type) {
         this.photo = photo;
         this.total_points = total_points;
         this.team=team;
         this.id=id;
+        this.element_type=element_type;
     }
 
     public String getPhoto() {

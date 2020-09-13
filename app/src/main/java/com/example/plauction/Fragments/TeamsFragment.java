@@ -3,7 +3,6 @@ package com.example.plauction.Fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,28 +18,21 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
 import com.example.plauction.Activities.MainActivity;
 import com.example.plauction.Adapters.PlayersAdapter;
 import com.example.plauction.Adapters.TeamListSpinnerAdapter;
 import com.example.plauction.Common.CommonFunctions;
 import com.example.plauction.Entities.AuctionTeamsEntity;
-import com.example.plauction.Entities.BootstrapEntity;
 import com.example.plauction.Entities.Elements;
 import com.example.plauction.Entities.Playerinfo;
 import com.example.plauction.R;
-import com.example.plauction.RestClientImpl.RESTClientImplementation;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.security.Key;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class TeamsFragment extends Fragment {
 
@@ -48,7 +40,7 @@ public class TeamsFragment extends Fragment {
     Activity activity;
     private TextView teamPoints;
     private RecyclerView playerRecyclerView;
-    private ShimmerFrameLayout shimmerFrameLayout;
+
     private NestedScrollView playersNestedScrollView;
     private  View inflated_frag;
     private RelativeLayout relativeLayout;
@@ -71,8 +63,8 @@ public class TeamsFragment extends Fragment {
         }
 
         // Initializing an ArrayAdapter
-        TeamListSpinnerAdapter teamListSpinnerAdapter = new TeamListSpinnerAdapter(context,R.layout.team_spinner_item,teamsList, spinner);
-        teamListSpinnerAdapter.setDropDownViewResource(R.layout.team_spinner_item);
+        TeamListSpinnerAdapter teamListSpinnerAdapter = new TeamListSpinnerAdapter(context,R.layout.item_team_spinner,teamsList, spinner);
+        teamListSpinnerAdapter.setDropDownViewResource(R.layout.item_team_spinner);
         spinner.setAdapter(teamListSpinnerAdapter);
         int getDefaultPos = teamListSpinnerAdapter.getPosition("SELECT A TEAM");
         spinner.setSelection(getDefaultPos); // Default Message
@@ -102,11 +94,6 @@ public class TeamsFragment extends Fragment {
 
             }
         });
-        shimmerFrameLayout.stopShimmer();
-        shimmerFrameLayout.setVisibility(View.GONE);
-        relativeLayout.setVisibility(View.VISIBLE);
-
-
     }
 
     @Override
@@ -143,7 +130,7 @@ public class TeamsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         inflated_frag = inflater.inflate(R.layout.fragment_details, container, false);
-        shimmerFrameLayout =(ShimmerFrameLayout)inflated_frag.findViewById(R.id.shimmer_details_frag);
+
         relativeLayout = (RelativeLayout)inflated_frag.findViewById(R.id.relative_detail_frag);
         spinner = inflated_frag.findViewById(R.id.spinnerTeamName);
         playerRecyclerView=(RecyclerView) inflated_frag.findViewById(R.id.playersRecyclerView);
