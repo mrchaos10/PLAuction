@@ -25,6 +25,7 @@ import com.example.plauction.Adapters.TeamCompositionAdapter;
 import com.example.plauction.Constants.Constants;
 import com.example.plauction.Entities.AuctionTeamsEntity;
 import com.example.plauction.Entities.Elements;
+import com.example.plauction.Entities.History;
 import com.example.plauction.Entities.Playerinfo;
 import com.example.plauction.Entities.TeamCompositionEntity;
 import com.example.plauction.R;
@@ -38,6 +39,7 @@ import java.util.Map;
 public class CommonFunctions {
 
     private  static Map<Integer, Elements> playerIdToElementMap_;
+    private static Map<Integer,List<History>> playerIdtoHistoryMap_;
 
     // General toasts ..............
 
@@ -144,6 +146,30 @@ public class CommonFunctions {
         return sum;
     }
 
+    public static int getGameWeekAggSum(ArrayList<Playerinfo> playerinfoArrayList)
+    {
+        if(playerIdtoHistoryMap_ == null || playerIdtoHistoryMap_.size() == 0)
+            return 0;
+
+        int sum =0;
+        for(Playerinfo player: playerinfoArrayList)
+        {
+            if(!playerIdToElementMap_.containsKey(player.getPlayerId()))
+            {
+                sum+=0;
+            }
+            else
+            {
+                //gameweek sum logic
+                for(History h :playerIdtoHistoryMap_.get(player.getPlayerId())){
+                    sum+=h.getTotal_points();
+            }
+            }
+        }
+        return sum;
+    }
+
+
     public static AuctionTeamsEntity filterPlayers(AuctionTeamsEntity auctionTeamsEntity, int elementType)
     {
         ArrayList<Playerinfo> playerinfos = auctionTeamsEntity.getPlayerInfo();
@@ -205,4 +231,11 @@ public class CommonFunctions {
         return alertDialog;
     }
 
+    public static Map<Integer, List<History>> getPlayerIdtoHistoryMap_() {
+        return playerIdtoHistoryMap_;
+    }
+
+    public static void setPlayerIdtoHistoryMap_(Map<Integer, List<History>> playerIdtoHistoryMap_) {
+        CommonFunctions.playerIdtoHistoryMap_ = playerIdtoHistoryMap_;
+    }
 }

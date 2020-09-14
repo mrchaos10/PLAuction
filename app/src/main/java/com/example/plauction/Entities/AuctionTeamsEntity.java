@@ -45,10 +45,13 @@ public class AuctionTeamsEntity {
         this.transferEntities = transferEntities;
     }
 
-    public int getTotalPoints()
-    {
-        return CommonFunctions.getTeamTotalSum(getPlayerInfo());
-    }
+    public int getTotalPoints() {
+        if (transferEntities == null) {
+            return CommonFunctions.getTeamTotalSum(getPlayerInfo());
+        } else {
+            return CommonFunctions.getTeamTotalSum(getPlayerInfo());
+        }
 
+    }
 }
 

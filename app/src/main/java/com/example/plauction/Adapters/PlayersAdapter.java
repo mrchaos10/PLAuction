@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.plauction.Common.CommonFunctions;
 import com.example.plauction.Constants.Constants;
 import com.example.plauction.Entities.ElementEntity;
 import com.example.plauction.Entities.Elements;
@@ -27,6 +28,7 @@ import com.example.plauction.R;
 import com.example.plauction.RestClientImpl.RESTClientImplementation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -86,7 +88,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
         private ConstraintLayout playersLiveLayout;
         private NestedScrollView playersGwDetails;
         private RecyclerView playersGwRecyclerView;
-        private ArrayList<History> history;
+        private List<History> history;
         public ViewHolder(View itemView) {
             super(itemView);
             playerGwViewHeader=(View) itemView.findViewById(R.id.playerDetailsTitle);
@@ -105,6 +107,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
                 public void onClick(final View view) {
                     Log.i("clicking","working");
                     final Playerinfo player = selectedTeamPlayers.get(getAdapterPosition());
+
                     RESTClientImplementation.getElementSummary(new ElementEntity.OnListLoad() {
                         @Override
                         public void onListLoaded(int code, ElementEntity elementEntity, VolleyError volleyError) {
@@ -128,6 +131,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
                             }
                         }
                     },view.getContext(),player.getPlayerId());
+
                 }
             });
 

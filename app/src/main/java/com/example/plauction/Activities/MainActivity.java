@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 
 import com.android.volley.VolleyError;
+import com.example.plauction.Adapters.GameWeekAdapter;
 import com.example.plauction.Adapters.PageAdapter;
 import com.example.plauction.Adapters.PlayersAdapter;
 import com.example.plauction.Adapters.TeamListSpinnerAdapter;
@@ -25,7 +26,9 @@ import com.example.plauction.Common.CenteringTabLayout;
 import com.example.plauction.Common.CommonFunctions;
 import com.example.plauction.Entities.AuctionTeamsEntity;
 import com.example.plauction.Entities.BootstrapEntity;
+import com.example.plauction.Entities.ElementEntity;
 import com.example.plauction.Entities.Elements;
+import com.example.plauction.Entities.History;
 import com.example.plauction.Entities.Playerinfo;
 import com.example.plauction.Fragments.TeamsFragment;
 import com.example.plauction.Fragments.LeaderboardFragment;
@@ -58,7 +61,9 @@ public class MainActivity extends AppCompatActivity {
     private AppBarLayout appBarLayout;
     Gson gson = new Gson();
     private ArrayList<String> teamsList=new ArrayList<>();
+    Map<Integer,List<History>> historymap = new HashMap<Integer,List<History>>();
     ArrayList<Elements> elements;
+    ArrayList<History> history;
     private Bundle bundle = new Bundle();
     private ImageView imageView;
     private boolean isPagersSet=false;
@@ -138,6 +143,28 @@ public class MainActivity extends AppCompatActivity {
                                 loadViewPager();
                                 CommonFunctions.makeSnackBar("Teams Data Fetched",coordinatorLayout).show();
 
+//                                for (AuctionTeamsEntity a:auctionTeamsEntities){
+//                                    for(final Playerinfo p:a.getPlayerInfo()) {
+//                                        RESTClientImplementation.getElementSummary(new ElementEntity.OnListLoad() {
+//                                            @Override
+//                                            public void onListLoaded(int code, ElementEntity elementEntity, VolleyError volleyError) {
+//                                                if (code == 200 && volleyError != null) {
+//                                                    history = elementEntity.getHistory();
+//                                                    // Populate player id to GW History map
+//                                                    historymap.put(p.getPlayerId(),history);
+//                                                    } else {
+//                                                    Log.i("Failed", "Network Error");
+//                                                }
+//                                            }
+//                                        }, getApplicationContext(),p.getPlayerId());
+//                                    }
+//                                }
+//                                CommonFunctions.setPlayerIdtoHistoryMap_(historymap);
+//                                //to Load the data after every fetch is finished
+//                                if(historymap!=null || historymap.size()>0) {
+//                                    loadViewPager();
+//                                }
+
                             }else if(code == 700){
                                 shimmerFrameLayout.stopShimmer();
                                 shimmerFrameLayout.setVisibility(View.GONE);
@@ -160,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
                     shimmerFrameLayout.stopShimmer();
                     shimmerFrameLayout.setVisibility(View.GONE);
                     CommonFunctions.makeToast(CommonFunctions.getErrorMessage(code, getApplicationContext()),getApplicationContext());
-
                 }
             }
         },getApplicationContext());
