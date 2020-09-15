@@ -5,18 +5,18 @@ import com.android.volley.VolleyError;
 import java.util.ArrayList;
 
 public class BootstrapEntity {
-    ArrayList<Elements> elements;
-    private BootstrapEntity(ArrayList<Elements> elements){
+    ArrayList<ElementsEntity> elements;
+    private BootstrapEntity(ArrayList<ElementsEntity> elements){
         this.elements=elements;
     }
     public interface OnListLoad {
         public void onListLoaded(int code, BootstrapEntity bootstrapEntity, VolleyError volleyError);
     }
-    public ArrayList<Elements> getElements() {
+    public ArrayList<ElementsEntity> getElements() {
         return elements;
     }
 
-    public void setElements(ArrayList<Elements> elements) {
+    public void setElements(ArrayList<ElementsEntity> elements) {
         this.elements = elements;
     }
 }

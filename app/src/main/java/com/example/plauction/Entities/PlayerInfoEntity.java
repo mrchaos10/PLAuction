@@ -1,6 +1,6 @@
 package com.example.plauction.Entities;
 
-public class Playerinfo {
+public class PlayerInfoEntity {
     String playerName;
     Integer playerId;
     Float amountBought;

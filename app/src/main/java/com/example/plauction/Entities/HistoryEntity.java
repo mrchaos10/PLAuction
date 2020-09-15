@@ -1,13 +1,13 @@
 package com.example.plauction.Entities;
 
-public class History {
+public class HistoryEntity {
     Integer total_points;
     Integer round;
     Integer minutes;
     Integer goals_scored;
     Integer assists;
     Integer clean_sheets;
-    public History(Integer total_points, Integer round, Integer minutes, Integer goals_scored, Integer assists, Integer clean_sheets) {
+    public HistoryEntity(Integer total_points, Integer round, Integer minutes, Integer goals_scored, Integer assists, Integer clean_sheets) {
         this.total_points = total_points;
         this.round = round;
         this.minutes = minutes;

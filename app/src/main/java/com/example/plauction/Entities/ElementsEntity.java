@@ -5,7 +5,7 @@ import com.android.volley.VolleyError;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Elements {
+public class ElementsEntity {
     String photo;
     Integer total_points;
     Integer team;
@@ -36,7 +36,7 @@ public class Elements {
         this.team = team;
     }
 
-    public Elements(String photo, Integer total_points,Integer team,Integer id, Integer element_type) {
+    public ElementsEntity(String photo, Integer total_points, Integer team, Integer id, Integer element_type) {
         this.photo = photo;
         this.total_points = total_points;
         this.team=team;

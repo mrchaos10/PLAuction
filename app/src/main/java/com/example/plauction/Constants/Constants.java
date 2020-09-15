@@ -18,6 +18,8 @@ public class Constants {
     public static final String BASE_BOOTSTRAP_URL="https://fantasy.premierleague.com/api/bootstrap-static/";
     public static final String BASE_PLAYER_INFO_URL="https://fantasy.premierleague.com/api/element-summary/";
     public static final String PLAYER_IMAGE_URL="https://resources.premierleague.com/premierleague/photos/players/110x140/p";
+    public static final String ELEMENT_SUMMARIES_URI="https://pl-players-history.herokuapp.com/";
+    //public static final String ELEMENT_SUMMARIES_URI="http://192.168.43.210:5000/";
     public static final ObjectMapper mapper = new ObjectMapper()
             .configure(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT, true)
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)

@@ -23,10 +23,9 @@ import com.example.plauction.Adapters.PlayersAdapter;
 import com.example.plauction.Adapters.TeamListSpinnerAdapter;
 import com.example.plauction.Common.CommonFunctions;
 import com.example.plauction.Entities.AuctionTeamsEntity;
-import com.example.plauction.Entities.Elements;
-import com.example.plauction.Entities.Playerinfo;
+import com.example.plauction.Entities.ElementsEntity;
+import com.example.plauction.Entities.PlayerInfoEntity;
 import com.example.plauction.R;
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -46,8 +45,8 @@ public class TeamsFragment extends Fragment {
     private RelativeLayout relativeLayout;
     private Spinner spinner;
     private ArrayList<String> teamsList=new ArrayList<>();
-    private ArrayList<ArrayList<Playerinfo>> teamPlayers=new ArrayList<>();
-    private ArrayList<Elements> elements;
+    private ArrayList<ArrayList<PlayerInfoEntity>> teamPlayers=new ArrayList<>();
+    private ArrayList<ElementsEntity> elements;
     private PlayersAdapter playersAdapter;
     private ArrayList<AuctionTeamsEntity> auctionTeamsEntitiesList;
     private  AuctionTeamsEntity[] auctionTeamsEntities;
@@ -74,7 +73,7 @@ public class TeamsFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedTeamName = (String) parent.getItemAtPosition(position);
-                ArrayList<Playerinfo> selectedTeamPlayers= teamPlayers.get(position);
+                ArrayList<PlayerInfoEntity> selectedTeamPlayers= teamPlayers.get(position);
                 if (position == 0) {
                     CommonFunctions.makeToast("PLEASE SELECT A TEAM", context);
                 }

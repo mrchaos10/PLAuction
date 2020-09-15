@@ -18,28 +18,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.plauction.Common.CommonFunctions;
 import com.example.plauction.Constants.Constants;
-import com.example.plauction.Entities.ElementEntity;
-import com.example.plauction.Entities.Elements;
-import com.example.plauction.Entities.History;
-import com.example.plauction.Entities.Playerinfo;
+import com.example.plauction.Entities.ElementHistoryEntity;
+import com.example.plauction.Entities.ElementsEntity;
+import com.example.plauction.Entities.HistoryEntity;
+import com.example.plauction.Entities.PlayerInfoEntity;
 import com.example.plauction.R;
 import com.example.plauction.RestClientImpl.RESTClientImplementation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
 public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHolder> {
-    private List<Playerinfo> selectedTeamPlayers;
-    private Map<Integer,Elements> elements;
+    private List<PlayerInfoEntity> selectedTeamPlayers;
+    private Map<Integer, ElementsEntity> elements;
     private GameWeekAdapter gameWeekAdapter;
     private Activity activity;
     private String[] teams=new String[]{"Arsenal","Aston Villa","Brighton","Burnley","Chelsea", "Crystal Palace","Everton","Fulham","Leicester","Leeds","Liverpool", "Man City","Man Utd","Newcastle United","Sheffield United","Southampton","Spurs","West Bromwich","West Ham","Wolves"};
-    public PlayersAdapter(Activity activity, List<Playerinfo> selectedTeamPlayers, Map<Integer,Elements> elements){
+    public PlayersAdapter(Activity activity, List<PlayerInfoEntity> selectedTeamPlayers, Map<Integer, ElementsEntity> elements){
         this.activity=activity;
         this.elements=elements;
         this.selectedTeamPlayers=selectedTeamPlayers;
@@ -55,8 +52,8 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull PlayersAdapter.ViewHolder holder, int position) {
-        Playerinfo player = selectedTeamPlayers.get(position);
-        Elements element=elements.get(player.getPlayerId());
+        PlayerInfoEntity player = selectedTeamPlayers.get(position);
+        ElementsEntity element=elements.get(player.getPlayerId());
 //        Log.i("element",element.getTeam().toString());
 //        Log.i("image",element.getPhoto());
 //        Log.i("points",element.getTotal_points().toString());
@@ -76,7 +73,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
     }
 
     public interface OnItemClickListener {
-        void onItemClick(View view, Playerinfo player, int position);
+        void onItemClick(View view, PlayerInfoEntity player, int position);
     }
 
 
@@ -88,7 +85,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
         private ConstraintLayout playersLiveLayout;
         private NestedScrollView playersGwDetails;
         private RecyclerView playersGwRecyclerView;
-        private List<History> history;
+        private List<HistoryEntity> history;
         public ViewHolder(View itemView) {
             super(itemView);
             playerGwViewHeader=(View) itemView.findViewById(R.id.playerDetailsTitle);
@@ -106,13 +103,13 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
                 @Override
                 public void onClick(final View view) {
                     Log.i("clicking","working");
-                    final Playerinfo player = selectedTeamPlayers.get(getAdapterPosition());
+                    final PlayerInfoEntity player = selectedTeamPlayers.get(getAdapterPosition());
 
-                    RESTClientImplementation.getElementSummary(new ElementEntity.OnListLoad() {
+                    RESTClientImplementation.getElementSummary(new ElementHistoryEntity.OnListLoad() {
                         @Override
-                        public void onListLoaded(int code, ElementEntity elementEntity, VolleyError volleyError) {
+                        public void onListLoaded(int code, ElementHistoryEntity elementHistoryEntity, VolleyError volleyError) {
                             if(code == 200 && volleyError!=null){
-                                history=elementEntity.getHistory();
+                                history= elementHistoryEntity.getHistory();
 //                                Log.i("history",history.get(0).getMinutes().toString());
                                 if(playerGwViewHeader.getVisibility()==View.GONE && playersGwDetails.getVisibility()==View.GONE && history!=null){
                                     playerGwViewHeader.setVisibility(View.VISIBLE);

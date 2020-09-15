@@ -10,17 +10,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.plauction.Entities.History;
-import com.example.plauction.Entities.Playerinfo;
+import com.example.plauction.Entities.HistoryEntity;
+import com.example.plauction.Entities.PlayerInfoEntity;
 import com.example.plauction.R;
 
 import java.util.List;
 
 
 public class GameWeekAdapter extends RecyclerView.Adapter<GameWeekAdapter.ViewHolder> {
-    private List<History> history;
+    private List<HistoryEntity> history;
     private Activity activity;
-    public GameWeekAdapter(Activity activity, List<History> history){
+    public GameWeekAdapter(Activity activity, List<HistoryEntity> history){
         this.activity=activity;
         this.history=history;
     }
@@ -36,7 +36,7 @@ public class GameWeekAdapter extends RecyclerView.Adapter<GameWeekAdapter.ViewHo
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull GameWeekAdapter.ViewHolder holder, int position) {
-        History gameWeek = history.get(position);
+        HistoryEntity gameWeek = history.get(position);
 //        Log.i("element",element.getTeam().toString());
 //        Log.i("image",element.getPhoto());
 //        Log.i("points",element.getTotal_points().toString());
@@ -54,7 +54,7 @@ public class GameWeekAdapter extends RecyclerView.Adapter<GameWeekAdapter.ViewHo
     }
 
     public interface OnItemClickListener {
-        void onItemClick(View view, Playerinfo player, int position);
+        void onItemClick(View view, PlayerInfoEntity player, int position);
     }
 
 

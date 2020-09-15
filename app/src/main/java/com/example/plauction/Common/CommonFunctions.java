@@ -4,29 +4,21 @@ package com.example.plauction.Common;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Bundle;
-import android.text.Html;
-import android.text.Spanned;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.VolleyError;
 import com.example.plauction.Adapters.TeamCompositionAdapter;
 import com.example.plauction.Constants.Constants;
 import com.example.plauction.Entities.AuctionTeamsEntity;
-import com.example.plauction.Entities.Elements;
-import com.example.plauction.Entities.History;
-import com.example.plauction.Entities.Playerinfo;
+import com.example.plauction.Entities.ElementsEntity;
+import com.example.plauction.Entities.HistoryEntity;
+import com.example.plauction.Entities.PlayerInfoEntity;
 import com.example.plauction.Entities.TeamCompositionEntity;
 import com.example.plauction.R;
 import com.google.android.material.snackbar.Snackbar;
@@ -38,9 +30,18 @@ import java.util.Map;
 
 public class CommonFunctions {
 
-    private  static Map<Integer, Elements> playerIdToElementMap_;
-    private static Map<Integer,List<History>> playerIdtoHistoryMap_;
+    private  static Map<Integer, ElementsEntity> playerIdToElementMap_;
+    private static Map<Integer,List<HistoryEntity>> playerIdtoHistoryMap_;
+    private  static Map<String, List<HistoryEntity>> elementSummaries;
 
+
+    public static Map<String, List<HistoryEntity>> getElementSummaries() {
+        return elementSummaries;
+    }
+
+    public static void setElementSummaries(Map<String, List<HistoryEntity>> elementSummaries) {
+        CommonFunctions.elementSummaries = elementSummaries;
+    }
     // General toasts ..............
 
     public static void makeToast(String message, Activity activity) {
@@ -117,22 +118,22 @@ public class CommonFunctions {
         return message;
     }
 
-    public static Map<Integer, Elements> getPlayerIdToElementMap_() {
+    public static Map<Integer, ElementsEntity> getPlayerIdToElementMap_() {
         return playerIdToElementMap_;
     }
 
-    public static void setPlayerIdToElementMap_(Map<Integer, Elements> playerIdToElementMap_) {
+    public static void setPlayerIdToElementMap_(Map<Integer, ElementsEntity> playerIdToElementMap_) {
         CommonFunctions.playerIdToElementMap_ = playerIdToElementMap_;
     }
 
 
-    public static int getTeamTotalSum(ArrayList<Playerinfo> playerinfoArrayList)
+    public static int getTeamTotalSum(ArrayList<PlayerInfoEntity> playerinfoArrayList)
     {
         if(playerIdToElementMap_ == null || playerIdToElementMap_.size() == 0)
             return 0;
 
         int sum =0;
-        for(Playerinfo player: playerinfoArrayList)
+        for(PlayerInfoEntity player: playerinfoArrayList)
         {
             if(!playerIdToElementMap_.containsKey(player.getPlayerId()))
             {
@@ -146,13 +147,13 @@ public class CommonFunctions {
         return sum;
     }
 
-    public static int getGameWeekAggSum(ArrayList<Playerinfo> playerinfoArrayList)
+    public static int getGameWeekAggSum(ArrayList<PlayerInfoEntity> playerinfoArrayList)
     {
         if(playerIdtoHistoryMap_ == null || playerIdtoHistoryMap_.size() == 0)
             return 0;
 
         int sum =0;
-        for(Playerinfo player: playerinfoArrayList)
+        for(PlayerInfoEntity player: playerinfoArrayList)
         {
             if(!playerIdToElementMap_.containsKey(player.getPlayerId()))
             {
@@ -161,7 +162,7 @@ public class CommonFunctions {
             else
             {
                 //gameweek sum logic
-                for(History h :playerIdtoHistoryMap_.get(player.getPlayerId())){
+                for(HistoryEntity h :playerIdtoHistoryMap_.get(player.getPlayerId())){
                     sum+=h.getTotal_points();
             }
             }
@@ -172,10 +173,10 @@ public class CommonFunctions {
 
     public static AuctionTeamsEntity filterPlayers(AuctionTeamsEntity auctionTeamsEntity, int elementType)
     {
-        ArrayList<Playerinfo> playerinfos = auctionTeamsEntity.getPlayerInfo();
-        ArrayList<Playerinfo> filteredPlayerInfos= new ArrayList<>();
+        ArrayList<PlayerInfoEntity> playerinfos = auctionTeamsEntity.getPlayerInfo();
+        ArrayList<PlayerInfoEntity> filteredPlayerInfos= new ArrayList<>();
 
-        for(Playerinfo p: playerinfos){
+        for(PlayerInfoEntity p: playerinfos){
             if(playerIdToElementMap_.containsKey(p.getPlayerId()) && playerIdToElementMap_.get(p.getPlayerId()).getElement_type() == elementType)
                 filteredPlayerInfos.add(p);
         }
@@ -231,11 +232,11 @@ public class CommonFunctions {
         return alertDialog;
     }
 
-    public static Map<Integer, List<History>> getPlayerIdtoHistoryMap_() {
+    public static Map<Integer, List<HistoryEntity>> getPlayerIdtoHistoryMap_() {
         return playerIdtoHistoryMap_;
     }
 
-    public static void setPlayerIdtoHistoryMap_(Map<Integer, List<History>> playerIdtoHistoryMap_) {
+    public static void setPlayerIdtoHistoryMap_(Map<Integer, List<HistoryEntity>> playerIdtoHistoryMap_) {
         CommonFunctions.playerIdtoHistoryMap_ = playerIdtoHistoryMap_;
     }
 }

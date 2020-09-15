@@ -16,7 +16,7 @@ import java.io.UnsupportedEncodingException;
 public class JsonBaseRequest extends JsonObjectRequest{
     public JsonBaseRequest(int method, String url, JSONObject jsonObject, Response.Listener<JSONObject> successListener, Response.ErrorListener errorListener){
         super(method,url,jsonObject,successListener,errorListener);
-        setRetryPolicy(new DefaultRetryPolicy(1000,1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        setRetryPolicy(new DefaultRetryPolicy(10000,1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     public JsonBaseRequest(int method, String url, JSONObject jsonObject, Response.Listener<JSONObject> successListener, Response.ErrorListener errorListener, int timeOut, int retries){

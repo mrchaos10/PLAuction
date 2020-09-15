@@ -7,18 +7,18 @@ import java.util.ArrayList;
 
 public class AuctionTeamsEntity {
     String teamName;
-    ArrayList<Playerinfo> playerInfo;
+    ArrayList<PlayerInfoEntity> playerInfo;
     ArrayList<TransferEntity> transferEntities;
 
     public interface OnListLoad {
         public void onListLoaded(int code, AuctionTeamsEntity[] auctionTeamsEntities, VolleyError volleyError);
     }
 
-    public ArrayList<Playerinfo> getPlayerInfo() {
+    public ArrayList<PlayerInfoEntity> getPlayerInfo() {
         return playerInfo;
     }
 
-    public void setPlayerInfo(ArrayList<Playerinfo> playerInfo) {
+    public void setPlayerInfo(ArrayList<PlayerInfoEntity> playerInfo) {
         this.playerInfo = playerInfo;
     }
 
@@ -26,7 +26,7 @@ public class AuctionTeamsEntity {
         return transferEntities;
     }
 
-    public AuctionTeamsEntity(String teamName, ArrayList<Playerinfo> playerInfo, ArrayList<TransferEntity> transferEntities) {
+    public AuctionTeamsEntity(String teamName, ArrayList<PlayerInfoEntity> playerInfo, ArrayList<TransferEntity> transferEntities) {
         this.teamName = teamName;
         this.transferEntities = transferEntities;
         this.playerInfo = playerInfo;

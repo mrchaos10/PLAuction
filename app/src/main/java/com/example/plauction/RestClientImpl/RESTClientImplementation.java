@@ -12,20 +12,23 @@ import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.example.plauction.Constants.Constants;
 import com.example.plauction.Entities.AuctionTeamsEntity;
 import com.example.plauction.Entities.BootstrapEntity;
 
-import com.example.plauction.Entities.ElementEntity;
-import com.example.plauction.Entities.Elements;
+import com.example.plauction.Entities.ElementHistoryEntity;
+import com.example.plauction.Entities.ElementSummariesEntity;
+import com.example.plauction.Entities.HistoryEntity;
+import com.example.plauction.Entities.PlayerInfoEntity;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.example.plauction.Constants.Constants.*;
@@ -70,7 +73,7 @@ public class RESTClientImplementation {
     };
 
     //REST CALL FOR ELEMENT SUMMARY
-    public static void getElementSummary(final ElementEntity.OnListLoad onListLoad, Context context, Integer playerID){
+    public static void getElementSummary(final ElementHistoryEntity.OnListLoad onListLoad, Context context, Integer playerID){
         requestQueue = VolleySingleton.getInstance(context).getRequestQueue();
         String url = BASE_PLAYER_INFO_URL+playerID+'/';
 
@@ -79,9 +82,9 @@ public class RESTClientImplementation {
             @Override
             public void onResponse(JSONObject response) {
                 Gson gson = new Gson();
-                ElementEntity elementEntity = null;
-                elementEntity=gson.fromJson(response.toString(), ElementEntity.class);
-                onListLoad.onListLoaded(200,elementEntity,new VolleyError());
+                ElementHistoryEntity elementHistoryEntity = null;
+                elementHistoryEntity =gson.fromJson(response.toString(), ElementHistoryEntity.class);
+                onListLoad.onListLoaded(200, elementHistoryEntity,new VolleyError());
             }
 
         }, new Response.ErrorListener(){
@@ -98,7 +101,6 @@ public class RESTClientImplementation {
         requestQueue.add(jsonObjectRequest);
     };
 
-    //REST Call for normal login
     public static void getAuctionTeams(final AuctionTeamsEntity.OnListLoad onListLoad, Context context){
         requestQueue = VolleySingleton.getInstance(context).getRequestQueue();
         String url = AUCTION_TEAMS_URI;
@@ -134,5 +136,49 @@ public class RESTClientImplementation {
         requestQueue.add(jsonArrayRequest);
     };
 
+
+    public static String getQueryParams(AuctionTeamsEntity[] auctionTeamsEntities)
+    {
+        StringBuilder params= new StringBuilder();
+
+        for(AuctionTeamsEntity a: auctionTeamsEntities)
+        {
+            for(PlayerInfoEntity p: a.getPlayerInfo())
+            {
+                params.append("pid=").append(p.getPlayerId()).append("&");
+            }
+        }
+
+        return params.toString();
+    }
+
+    public static void getElementSummaries(final ElementSummariesEntity.RestClientInterface onResponseLoad, Context context, AuctionTeamsEntity[] auctionTeamsEntities) {
+        requestQueue = VolleySingleton.getInstance(context).getRequestQueue();
+        String url = ELEMENT_SUMMARIES_URI;
+        String queryParams=getQueryParams(auctionTeamsEntities);
+        url=url+"?"+queryParams;
+        JsonBaseRequest jsonBaseRequest = new JsonBaseRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Gson gson = new Gson();
+                response.remove("code");
+                Type listType = new TypeToken<Map<String, List<HistoryEntity>>>() {}.getType();
+                Map<String, List<HistoryEntity>> m = gson.fromJson(response.toString(), listType);
+                onResponseLoad.onResponseLoaded(200,null, m);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if(isNetworkError(error)){
+                    onResponseLoad.onResponseLoaded(700,new VolleyError(), null);
+                }
+                else {
+                    onResponseLoad.onResponseLoaded(error.networkResponse.statusCode,new VolleyError(), null);
+                }
+            }
+        });
+
+        requestQueue.add(jsonBaseRequest);
+    }
 
 }

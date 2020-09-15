@@ -3,7 +3,6 @@ package com.example.plauction.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Build;
@@ -11,25 +10,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
 import com.android.volley.VolleyError;
-import com.example.plauction.Adapters.GameWeekAdapter;
 import com.example.plauction.Adapters.PageAdapter;
-import com.example.plauction.Adapters.PlayersAdapter;
-import com.example.plauction.Adapters.TeamListSpinnerAdapter;
 import com.example.plauction.Common.CenteringTabLayout;
 import com.example.plauction.Common.CommonFunctions;
 import com.example.plauction.Entities.AuctionTeamsEntity;
 import com.example.plauction.Entities.BootstrapEntity;
-import com.example.plauction.Entities.ElementEntity;
-import com.example.plauction.Entities.Elements;
-import com.example.plauction.Entities.History;
-import com.example.plauction.Entities.Playerinfo;
+import com.example.plauction.Entities.ElementSummariesEntity;
+import com.example.plauction.Entities.ElementsEntity;
+import com.example.plauction.Entities.HistoryEntity;
 import com.example.plauction.Fragments.TeamsFragment;
 import com.example.plauction.Fragments.LeaderboardFragment;
 import com.example.plauction.R;
@@ -41,7 +35,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 
-import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,9 +54,9 @@ public class MainActivity extends AppCompatActivity {
     private AppBarLayout appBarLayout;
     Gson gson = new Gson();
     private ArrayList<String> teamsList=new ArrayList<>();
-    Map<Integer,List<History>> historymap = new HashMap<Integer,List<History>>();
-    ArrayList<Elements> elements;
-    ArrayList<History> history;
+    Map<Integer,List<HistoryEntity>> historymap = new HashMap<Integer,List<HistoryEntity>>();
+    ArrayList<ElementsEntity> elements;
+    ArrayList<HistoryEntity> history;
     private Bundle bundle = new Bundle();
     private ImageView imageView;
     private boolean isPagersSet=false;
@@ -124,8 +117,8 @@ public class MainActivity extends AppCompatActivity {
             public void onListLoaded(int code, BootstrapEntity bootstrapEntity, VolleyError volleyError) {
                 if(code == 200 && volleyError!=null){
                     elements=bootstrapEntity.getElements();
-                    Map<Integer,Elements> map = new HashMap<Integer,Elements>();
-                    for (Elements e : elements){
+                    Map<Integer, ElementsEntity> map = new HashMap<Integer, ElementsEntity>();
+                    for (ElementsEntity e : elements){
                         map.put(e.getId(),e);
                     }
                     // Populate player id to info map
@@ -133,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                     // This is a synchronous call as we need both data for our app
                     RESTClientImplementation.getAuctionTeams(new AuctionTeamsEntity.OnListLoad() {
                         @Override
-                        public void onListLoaded(int code, final AuctionTeamsEntity[] auctionTeamsEntities, VolleyError volleyError) {
+                        public void onListLoaded(int code, final AuctionTeamsEntity[] auctionTeamsEntities, final VolleyError volleyError) {
                             teamsList.add("SELECT A TEAM");
                             if(code == 200 && volleyError!=null){
                                 // Set auction team players in bundle
@@ -141,30 +134,6 @@ public class MainActivity extends AppCompatActivity {
                                 String teamsJson=gson.toJson(Arrays.asList(auctionTeamsEntities),listType);
                                 bundle.putString("AUCTION_TEAMS",teamsJson);
                                 loadViewPager();
-                                CommonFunctions.makeSnackBar("Teams Data Fetched",coordinatorLayout).show();
-
-//                                for (AuctionTeamsEntity a:auctionTeamsEntities){
-//                                    for(final Playerinfo p:a.getPlayerInfo()) {
-//                                        RESTClientImplementation.getElementSummary(new ElementEntity.OnListLoad() {
-//                                            @Override
-//                                            public void onListLoaded(int code, ElementEntity elementEntity, VolleyError volleyError) {
-//                                                if (code == 200 && volleyError != null) {
-//                                                    history = elementEntity.getHistory();
-//                                                    // Populate player id to GW History map
-//                                                    historymap.put(p.getPlayerId(),history);
-//                                                    } else {
-//                                                    Log.i("Failed", "Network Error");
-//                                                }
-//                                            }
-//                                        }, getApplicationContext(),p.getPlayerId());
-//                                    }
-//                                }
-//                                CommonFunctions.setPlayerIdtoHistoryMap_(historymap);
-//                                //to Load the data after every fetch is finished
-//                                if(historymap!=null || historymap.size()>0) {
-//                                    loadViewPager();
-//                                }
-
                             }else if(code == 700){
                                 shimmerFrameLayout.stopShimmer();
                                 shimmerFrameLayout.setVisibility(View.GONE);
@@ -193,8 +162,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -236,3 +203,33 @@ public class MainActivity extends AppCompatActivity {
 
     }
 }
+
+
+// Paste this inside loadData to support element summaries
+
+    /*RESTClientImplementation.getElementSummaries(new ElementSummariesEntity.RestClientInterface() {
+        @Override
+        public void onResponseLoaded(int code, VolleyError error,  Map<String, List<HistoryEntity>> elementSummaryEntity) {
+            if(code == 200)
+            {
+                //String summaries=gson.toJson(elementSummaryEntity,ElementSummariesEntity.class);
+                // Set map in common functions -- Use CommonFunctions.getElementSummaries to get map again
+                CommonFunctions.setElementSummaries(elementSummaryEntity);
+                Log.i("SUMMARY SIZE", elementSummaryEntity.size()+"");
+                loadViewPager();
+                CommonFunctions.makeSnackBar("Teams Data Fetched",coordinatorLayout).show();
+            }
+            else if(code == 700)
+            {
+                shimmerFrameLayout.stopShimmer();
+                shimmerFrameLayout.setVisibility(View.GONE);
+                CommonFunctions.makeToast("No internet connectivity",getApplicationContext());
+            }
+            else
+            {
+                shimmerFrameLayout.stopShimmer();
+                shimmerFrameLayout.setVisibility(View.GONE);
+                CommonFunctions.makeToast(CommonFunctions.getErrorMessage(code, getApplicationContext()),getApplicationContext());
+            }
+        }
+    }, getApplicationContext(), auctionTeamsEntities);*/
