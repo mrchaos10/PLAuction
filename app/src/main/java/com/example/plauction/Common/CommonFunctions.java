@@ -20,6 +20,7 @@ import com.example.plauction.Entities.ElementsEntity;
 import com.example.plauction.Entities.HistoryEntity;
 import com.example.plauction.Entities.PlayerInfoEntity;
 import com.example.plauction.Entities.TeamCompositionEntity;
+import com.example.plauction.Entities.TransferEntity;
 import com.example.plauction.R;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -162,8 +163,10 @@ public class CommonFunctions {
             else
             {
                 //gameweek sum logic
-                for(HistoryEntity h :playerIdtoHistoryMap_.get(player.getPlayerId())){
-                    sum+=h.getTotal_points();
+                List<HistoryEntity> gwHistory=playerIdtoHistoryMap_.get(player.getPlayerId());
+                TransferEntity transfer=player.getTransferEntity();
+                for(int i=transfer.getIn();i<transfer.getOut();i++){
+                    sum+=gwHistory.get(i).getTotal_points();
             }
             }
         }

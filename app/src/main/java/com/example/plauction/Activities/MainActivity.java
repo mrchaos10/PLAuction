@@ -133,8 +133,8 @@ public class MainActivity extends AppCompatActivity {
                                 Type listType = new TypeToken<List<AuctionTeamsEntity>>() {}.getType();
                                 String teamsJson=gson.toJson(Arrays.asList(auctionTeamsEntities),listType);
                                 bundle.putString("AUCTION_TEAMS",teamsJson);
-                                loadViewPager();
-                                /*RESTClientImplementation.getElementSummaries(new ElementSummariesEntity.RestClientInterface() {
+                                //loadViewPager();
+                                RESTClientImplementation.getElementSummaries(new ElementSummariesEntity.RestClientInterface() {
                                     @Override
                                     public void onResponseLoaded(int code, VolleyError error,  Map<String, List<HistoryEntity>> elementSummaryEntity) {
                                         if(code == 200)
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                                             CommonFunctions.makeToast(CommonFunctions.getErrorMessage(code, getApplicationContext()),getApplicationContext());
                                         }
                                     }
-                                }, getApplicationContext(), auctionTeamsEntities);*/
+                                }, getApplicationContext(), auctionTeamsEntities);
                             }else if(code == 700){
                                 shimmerFrameLayout.stopShimmer();
                                 shimmerFrameLayout.setVisibility(View.GONE);

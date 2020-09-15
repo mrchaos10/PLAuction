@@ -49,7 +49,7 @@ public class AuctionTeamsEntity {
         if (transferEntities == null) {
             return CommonFunctions.getTeamTotalSum(getPlayerInfo());
         } else {
-            return CommonFunctions.getTeamTotalSum(getPlayerInfo());
+            return CommonFunctions.getGameWeekAggSum(getPlayerInfo());
         }
 
     }
