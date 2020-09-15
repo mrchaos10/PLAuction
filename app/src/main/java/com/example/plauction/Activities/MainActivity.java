@@ -134,6 +134,32 @@ public class MainActivity extends AppCompatActivity {
                                 String teamsJson=gson.toJson(Arrays.asList(auctionTeamsEntities),listType);
                                 bundle.putString("AUCTION_TEAMS",teamsJson);
                                 loadViewPager();
+                                /*RESTClientImplementation.getElementSummaries(new ElementSummariesEntity.RestClientInterface() {
+                                    @Override
+                                    public void onResponseLoaded(int code, VolleyError error,  Map<String, List<HistoryEntity>> elementSummaryEntity) {
+                                        if(code == 200)
+                                        {
+                                            //String summaries=gson.toJson(elementSummaryEntity,ElementSummariesEntity.class);
+                                            // Set map in common functions -- Use CommonFunctions.getElementSummaries to get map again
+                                            CommonFunctions.setElementSummaries(elementSummaryEntity);
+                                            Log.i("SUMMARY SIZE", elementSummaryEntity.size()+"");
+                                            loadViewPager();
+                                            CommonFunctions.makeSnackBar("Teams Data Fetched",coordinatorLayout).show();
+                                        }
+                                        else if(code == 700)
+                                        {
+                                            shimmerFrameLayout.stopShimmer();
+                                            shimmerFrameLayout.setVisibility(View.GONE);
+                                            CommonFunctions.makeToast("No internet connectivity",getApplicationContext());
+                                        }
+                                        else
+                                        {
+                                            shimmerFrameLayout.stopShimmer();
+                                            shimmerFrameLayout.setVisibility(View.GONE);
+                                            CommonFunctions.makeToast(CommonFunctions.getErrorMessage(code, getApplicationContext()),getApplicationContext());
+                                        }
+                                    }
+                                }, getApplicationContext(), auctionTeamsEntities);*/
                             }else if(code == 700){
                                 shimmerFrameLayout.stopShimmer();
                                 shimmerFrameLayout.setVisibility(View.GONE);
@@ -205,31 +231,4 @@ public class MainActivity extends AppCompatActivity {
 }
 
 
-// Paste this inside loadData to support element summaries
 
-    /*RESTClientImplementation.getElementSummaries(new ElementSummariesEntity.RestClientInterface() {
-        @Override
-        public void onResponseLoaded(int code, VolleyError error,  Map<String, List<HistoryEntity>> elementSummaryEntity) {
-            if(code == 200)
-            {
-                //String summaries=gson.toJson(elementSummaryEntity,ElementSummariesEntity.class);
-                // Set map in common functions -- Use CommonFunctions.getElementSummaries to get map again
-                CommonFunctions.setElementSummaries(elementSummaryEntity);
-                Log.i("SUMMARY SIZE", elementSummaryEntity.size()+"");
-                loadViewPager();
-                CommonFunctions.makeSnackBar("Teams Data Fetched",coordinatorLayout).show();
-            }
-            else if(code == 700)
-            {
-                shimmerFrameLayout.stopShimmer();
-                shimmerFrameLayout.setVisibility(View.GONE);
-                CommonFunctions.makeToast("No internet connectivity",getApplicationContext());
-            }
-            else
-            {
-                shimmerFrameLayout.stopShimmer();
-                shimmerFrameLayout.setVisibility(View.GONE);
-                CommonFunctions.makeToast(CommonFunctions.getErrorMessage(code, getApplicationContext()),getApplicationContext());
-            }
-        }
-    }, getApplicationContext(), auctionTeamsEntities);*/
