@@ -153,6 +153,7 @@ public class CommonFunctions {
         if(playerIdtoHistoryMap_ == null || playerIdtoHistoryMap_.size() == 0)
             return 0;
 
+        //SINCE I UNDERSTAND IN AND OUT DENOTE THE GW RANGE and this needs to be present within the PlayerInfoEntity
         int sum =0;
         for(PlayerInfoEntity player: playerinfoArrayList)
         {
