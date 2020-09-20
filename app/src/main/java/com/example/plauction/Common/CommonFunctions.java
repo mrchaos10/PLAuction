@@ -166,9 +166,15 @@ public class CommonFunctions {
                 //gameweek sum logic
                 List<HistoryEntity> gwHistory=playerIdtoHistoryMap_.get(player.getPlayerId());
                 TransferEntity transfer=player.getTransferEntity();
-                for(int i=transfer.getIn();i<transfer.getOut();i++){
-                    sum+=gwHistory.get(i).getTotal_points();
-            }
+                if(transfer!=null){
+                    for(int i=transfer.getIn();i<transfer.getOut();i++){
+                        sum+=gwHistory.get(i).getTotal_points();
+                    }
+                }
+                //If no transfer exists for a player simply adding the total points and moving onto the next player
+                else{
+                    sum+=playerIdToElementMap_.get(player.getPlayerId()).getTotal_points();
+                }
             }
         }
         return sum;
