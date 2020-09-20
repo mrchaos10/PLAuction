@@ -46,12 +46,7 @@ public class AuctionTeamsEntity {
     }
 
     public int getTotalPoints() {
-        if (transferEntities == null) {
-            return CommonFunctions.getTeamTotalSum(getPlayerInfo());
-        } else {
             return CommonFunctions.getGameWeekAggSum(getPlayerInfo());
         }
-
-    }
 }
 

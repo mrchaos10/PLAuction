@@ -124,14 +124,7 @@ public class RESTClientImplementation {
                 }
             }
 
-        }){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("x-apikey", API_KEY);
-                return headers;
-            }
-        };
+        });
         jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(1000,1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(jsonArrayRequest);
     };

@@ -32,7 +32,6 @@ import java.util.Map;
 public class CommonFunctions {
 
     private  static Map<Integer, ElementsEntity> playerIdToElementMap_;
-    private static Map<Integer,List<HistoryEntity>> playerIdtoHistoryMap_;
     private  static Map<String, List<HistoryEntity>> elementSummaries;
 
 
@@ -150,7 +149,7 @@ public class CommonFunctions {
 
     public static int getGameWeekAggSum(ArrayList<PlayerInfoEntity> playerinfoArrayList)
     {
-        if(playerIdtoHistoryMap_ == null || playerIdtoHistoryMap_.size() == 0)
+        if(elementSummaries == null || elementSummaries.size() == 0)
             return 0;
 
         //SINCE I UNDERSTAND IN AND OUT DENOTE THE GW RANGE and this needs to be present within the PlayerInfoEntity
@@ -164,10 +163,18 @@ public class CommonFunctions {
             else
             {
                 //gameweek sum logic
-                List<HistoryEntity> gwHistory=playerIdtoHistoryMap_.get(player.getPlayerId());
-                TransferEntity transfer=player.getTransferEntity();
+                List<HistoryEntity> gwHistory=elementSummaries.get(player.getPlayerId()+"");
+                if(gwHistory == null)
+                {
+                    sum+=0;
+                    continue;
+                }
+                TransferEntity transfer=player.getTransfers();
                 if(transfer!=null){
-                    for(int i=transfer.getIn();i<transfer.getOut();i++){
+                    // decide start and end
+                    int start = transfer.getIn() == 0 ? 0 : transfer.getIn() - 1;
+                    int end = transfer.getOut() == 0 ? gwHistory.size() - 1  : transfer.getOut() - 1;
+                    for(int i=start;i<=end;i++){
                         sum+=gwHistory.get(i).getTotal_points();
                     }
                 }
@@ -242,11 +249,4 @@ public class CommonFunctions {
         return alertDialog;
     }
 
-    public static Map<Integer, List<HistoryEntity>> getPlayerIdtoHistoryMap_() {
-        return playerIdtoHistoryMap_;
-    }
-
-    public static void setPlayerIdtoHistoryMap_(Map<Integer, List<HistoryEntity>> playerIdtoHistoryMap_) {
-        CommonFunctions.playerIdtoHistoryMap_ = playerIdtoHistoryMap_;
-    }
 }
