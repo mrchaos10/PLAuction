@@ -208,9 +208,40 @@ public class CommonFunctions {
     }
 
 
-    public static PieChart getPieChart(ArrayList<PieEntry> entries)
+    public static void populatePieChart(PieChart chart, List<PieEntry> entries)
     {
+        chart.setUsePercentValues(false);
 
+        chart.getDescription().setEnabled(false);
+        chart.setExtraOffsets(5, 10, 5, 5);
+
+        chart.setDragDecelerationFrictionCoef(0.95f);
+
+        chart.setDrawHoleEnabled(true);
+        chart.setHoleColor(Color.WHITE);
+
+        chart.setTransparentCircleColor(Color.WHITE);
+        chart.setTransparentCircleAlpha(110);
+
+        chart.setHoleRadius(58f);
+        chart.setTransparentCircleRadius(61f);
+
+        chart.setRotationAngle(0);
+        // enable rotation of the chart by touch
+        chart.setRotationEnabled(true);
+        chart.setHighlightPerTapEnabled(true);
+        chart.animateY(1400, Easing.EaseInOutQuad);
+
+        PieDataSet dataSet = new PieDataSet(entries,"");
+
+        dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+        PieData data = new PieData(dataSet);
+        dataSet.setValueTextSize(16);
+        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        chart.setData(data);
+        chart.setDrawEntryLabels(false);
+        chart.highlightValues(null);
+        chart.getDescription().setEnabled(false);
     }
 
 
@@ -234,45 +265,11 @@ public class CommonFunctions {
         AuctionTeamsEntity gks  = filterPlayers(auctionTeamsEntity,1);
 
         List<PieEntry> teamCompositionEntities = new ArrayList<>();
-
         teamCompositionEntities.add(new PieEntry(getGameWeekAggSum(fwds.getPlayerInfo()),"FORWARDS"));
         teamCompositionEntities.add(new PieEntry(getGameWeekAggSum(mids.getPlayerInfo()),"MIDFIELDERS"));
         teamCompositionEntities.add(new PieEntry(getGameWeekAggSum(defs.getPlayerInfo()),"DEFENDERS"));
         teamCompositionEntities.add(new PieEntry(getGameWeekAggSum(gks.getPlayerInfo()),"KEEPERS"));
-
-
-        chart.setUsePercentValues(false);
-
-        chart.getDescription().setEnabled(false);
-        chart.setExtraOffsets(5, 10, 5, 5);
-
-        chart.setDragDecelerationFrictionCoef(0.95f);
-
-        chart.setDrawHoleEnabled(true);
-        chart.setHoleColor(Color.WHITE);
-
-        chart.setTransparentCircleColor(Color.WHITE);
-        chart.setTransparentCircleAlpha(110);
-
-        chart.setHoleRadius(58f);
-        chart.setTransparentCircleRadius(61f);
-
-        chart.setRotationAngle(0);
-        // enable rotation of the chart by touch
-        chart.setRotationEnabled(true);
-        chart.setHighlightPerTapEnabled(true);
-        chart.animateY(1400, Easing.EaseInOutQuad);
-
-        PieDataSet dataSet = new PieDataSet(teamCompositionEntities,"");
-
-        dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-        PieData data = new PieData(dataSet);
-        dataSet.setValueTextSize(16);
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-        chart.setData(data);
-        chart.setDrawEntryLabels(false);
-        chart.highlightValues(null);
-        chart.getDescription().setEnabled(false);
+        populatePieChart(chart, teamCompositionEntities);
 
         chart.postInvalidate();
 
