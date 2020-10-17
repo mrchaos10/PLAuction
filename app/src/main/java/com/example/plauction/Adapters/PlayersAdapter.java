@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.plauction.Common.CommonFunctions;
 import com.example.plauction.Constants.Constants;
 import com.example.plauction.Entities.ElementHistoryEntity;
 import com.example.plauction.Entities.ElementsEntity;
@@ -107,8 +108,23 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
                 public void onClick(final View view) {
                     Log.i("clicking","working");
                     final PlayerInfoEntity player = selectedTeamPlayers.get(getAdapterPosition());
+                    Map<String, List<HistoryEntity>> elementSummaries = CommonFunctions.getElementSummaries();
+                    history = elementSummaries.get(player.getPlayerId()+"");
+                    if(playerGwViewHeader.getVisibility()==View.GONE && playersGwDetails.getVisibility()==View.GONE && history!=null){
+                        playerGwViewHeader.setVisibility(View.VISIBLE);
+                        playersGwDetails.setVisibility(View.VISIBLE);
+                        gameWeekAdapter = new GameWeekAdapter(activity,history);
+                        playersGwRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+                        playersGwRecyclerView.setAdapter(gameWeekAdapter);
+                    }
+                    else{
+                        playerGwViewHeader.setVisibility(View.GONE);
+                        playersGwDetails.setVisibility(View.GONE);
+                    }
 
-                    RESTClientImplementation.getElementSummary(new ElementHistoryEntity.OnListLoad() {
+                    // Below call is now not required as we have fetched all element summaries
+                    
+                    /*RESTClientImplementation.getElementSummary(new ElementHistoryEntity.OnListLoad() {
                         @Override
                         public void onListLoaded(int code, ElementHistoryEntity elementHistoryEntity, VolleyError volleyError) {
                             if(code == 200 && volleyError!=null){
@@ -130,7 +146,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
                                 Log.i("Failed","Network Error");
                             }
                         }
-                    },view.getContext(),player.getPlayerId());
+                    },view.getContext(),player.getPlayerId()); */
 
                 }
             });

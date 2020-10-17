@@ -31,6 +31,8 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class TeamsFragment extends Fragment {
@@ -82,6 +84,12 @@ public class TeamsFragment extends Fragment {
                     //Log.i("SUM", CommonFunctions.getTeamTotalSum(selectedTeamPlayers)+"");
                     teamPoints.setText(selectedTeamName+" Points : "+CommonFunctions.getTeamTotalSum(selectedTeamPlayers));
                     playersNestedScrollView.setVisibility(View.VISIBLE);
+                    Collections.sort(selectedTeamPlayers, new Comparator<PlayerInfoEntity>() {
+                        @Override
+                        public int compare(PlayerInfoEntity o1, PlayerInfoEntity o2) {
+                            return CommonFunctions.getPlayerIdToElementMap_().get(o2.getPlayerId()).getTotal_points().compareTo(CommonFunctions.getPlayerIdToElementMap_().get(o1.getPlayerId()).getTotal_points());
+                        }
+                    });
                     playersAdapter = new PlayersAdapter(getActivity(),selectedTeamPlayers,CommonFunctions.getPlayerIdToElementMap_());
                     playerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                     playerRecyclerView.setAdapter(playersAdapter);

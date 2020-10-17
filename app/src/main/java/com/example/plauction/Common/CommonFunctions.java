@@ -4,26 +4,31 @@ package com.example.plauction.Common;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.plauction.Adapters.TeamCompositionAdapter;
 import com.example.plauction.Constants.Constants;
 import com.example.plauction.Entities.AuctionTeamsEntity;
 import com.example.plauction.Entities.ElementsEntity;
 import com.example.plauction.Entities.HistoryEntity;
 import com.example.plauction.Entities.PlayerInfoEntity;
-import com.example.plauction.Entities.TeamCompositionEntity;
 import com.example.plauction.Entities.TransferEntity;
 import com.example.plauction.R;
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +37,6 @@ import java.util.Map;
 public class CommonFunctions {
 
     private  static Map<Integer, ElementsEntity> playerIdToElementMap_;
-    private static Map<Integer,List<HistoryEntity>> playerIdtoHistoryMap_;
     private  static Map<String, List<HistoryEntity>> elementSummaries;
 
 
@@ -150,7 +154,7 @@ public class CommonFunctions {
 
     public static int getGameWeekAggSum(ArrayList<PlayerInfoEntity> playerinfoArrayList)
     {
-        if(playerIdtoHistoryMap_ == null || playerIdtoHistoryMap_.size() == 0)
+        if(elementSummaries == null || elementSummaries.size() == 0)
             return 0;
 
         //SINCE I UNDERSTAND IN AND OUT DENOTE THE GW RANGE and this needs to be present within the PlayerInfoEntity
@@ -164,10 +168,18 @@ public class CommonFunctions {
             else
             {
                 //gameweek sum logic
-                List<HistoryEntity> gwHistory=playerIdtoHistoryMap_.get(player.getPlayerId());
-                TransferEntity transfer=player.getTransferEntity();
+                List<HistoryEntity> gwHistory=elementSummaries.get(player.getPlayerId()+"");
+                if(gwHistory == null)
+                {
+                    sum+=0;
+                    continue;
+                }
+                TransferEntity transfer=player.getTransfers();
                 if(transfer!=null){
-                    for(int i=transfer.getIn();i<transfer.getOut();i++){
+                    // decide start and end
+                    int start = transfer.getIn() == 0 ? 0 : transfer.getIn() - 1;
+                    int end = transfer.getOut() == 0 ? gwHistory.size() - 1  : transfer.getOut() - 1;
+                    for(int i=start;i<=end;i++){
                         sum+=gwHistory.get(i).getTotal_points();
                     }
                 }
@@ -196,6 +208,43 @@ public class CommonFunctions {
     }
 
 
+    public static void populatePieChart(PieChart chart, List<PieEntry> entries)
+    {
+        chart.setUsePercentValues(false);
+
+        chart.getDescription().setEnabled(false);
+        chart.setExtraOffsets(5, 10, 5, 5);
+
+        chart.setDragDecelerationFrictionCoef(0.95f);
+
+        chart.setDrawHoleEnabled(true);
+        chart.setHoleColor(Color.WHITE);
+
+        chart.setTransparentCircleColor(Color.WHITE);
+        chart.setTransparentCircleAlpha(110);
+
+        chart.setHoleRadius(58f);
+        chart.setTransparentCircleRadius(61f);
+
+        chart.setRotationAngle(0);
+        // enable rotation of the chart by touch
+        chart.setRotationEnabled(true);
+        chart.setHighlightPerTapEnabled(true);
+        chart.animateY(1400, Easing.EaseInOutQuad);
+
+        PieDataSet dataSet = new PieDataSet(entries,"");
+
+        dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+        PieData data = new PieData(dataSet);
+        dataSet.setValueTextSize(16);
+        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        chart.setData(data);
+        chart.setDrawEntryLabels(false);
+        chart.highlightValues(null);
+        chart.getDescription().setEnabled(false);
+    }
+
+
     public static AlertDialog getTeamComposition(final AuctionTeamsEntity auctionTeamsEntity, final Context context, int composition){
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View dialogView = layoutInflater.inflate(R.layout.alert_teamcomp, null);
@@ -206,30 +255,31 @@ public class CommonFunctions {
         TextView rank = (TextView)dialogView.findViewById(R.id.temcomp_rank);
         TextView title =(TextView)dialogView.findViewById(R.id.diaglog_title);
         title.setText(auctionTeamsEntity.getTeamName());
-        GridView gridView = (GridView)dialogView.findViewById(R.id.temcomp_grid);
+
+
+        PieChart chart = (PieChart)dialogView.findViewById(R.id.pie_chart);
 
         AuctionTeamsEntity fwds = filterPlayers(auctionTeamsEntity,4);
         AuctionTeamsEntity mids = filterPlayers(auctionTeamsEntity,3);
         AuctionTeamsEntity defs = filterPlayers(auctionTeamsEntity,2);
         AuctionTeamsEntity gks  = filterPlayers(auctionTeamsEntity,1);
 
-        ArrayList<TeamCompositionEntity> teamCompositionEntities = new ArrayList<>();
+        List<PieEntry> teamCompositionEntities = new ArrayList<>();
+        teamCompositionEntities.add(new PieEntry(getGameWeekAggSum(fwds.getPlayerInfo()),"FORWARDS"));
+        teamCompositionEntities.add(new PieEntry(getGameWeekAggSum(mids.getPlayerInfo()),"MIDFIELDERS"));
+        teamCompositionEntities.add(new PieEntry(getGameWeekAggSum(defs.getPlayerInfo()),"DEFENDERS"));
+        teamCompositionEntities.add(new PieEntry(getGameWeekAggSum(gks.getPlayerInfo()),"KEEPERS"));
+        populatePieChart(chart, teamCompositionEntities);
 
-        TeamCompositionEntity fwdEntity = new TeamCompositionEntity("FORWARDS", getTeamTotalSum(fwds.getPlayerInfo()));
-        teamCompositionEntities.add(fwdEntity);
-        TeamCompositionEntity midsEntity = new TeamCompositionEntity("MIDFIELDERS", getTeamTotalSum(mids.getPlayerInfo()));
-        teamCompositionEntities.add(midsEntity);
-        TeamCompositionEntity defsEntity = new TeamCompositionEntity("DEFENDERS", getTeamTotalSum(defs.getPlayerInfo()));
-        teamCompositionEntities.add(defsEntity);
-        TeamCompositionEntity gksEntity = new TeamCompositionEntity("KEEPERS", getTeamTotalSum(gks.getPlayerInfo()));
-        teamCompositionEntities.add(gksEntity);
+        chart.postInvalidate();
 
-        TeamCompositionAdapter teamCompositionAdapter = new TeamCompositionAdapter(context,teamCompositionEntities);
-        gridView.setAdapter(teamCompositionAdapter);
+        //TeamCompositionAdapter teamCompositionAdapter = new TeamCompositionAdapter(context,teamCompositionEntities);
 
         Button confirm = dialogView.findViewById(R.id.confirm_reg);
 
         rank.setText("RANK - " + composition + ", POINTS - " + getTeamTotalSum(auctionTeamsEntity.getPlayerInfo()));
+
+        alertDialogBuilder.setView(dialogView);
 
         final AlertDialog alertDialog = alertDialogBuilder.create();
         confirm.setOnClickListener(new View.OnClickListener() {
@@ -242,11 +292,4 @@ public class CommonFunctions {
         return alertDialog;
     }
 
-    public static Map<Integer, List<HistoryEntity>> getPlayerIdtoHistoryMap_() {
-        return playerIdtoHistoryMap_;
-    }
-
-    public static void setPlayerIdtoHistoryMap_(Map<Integer, List<HistoryEntity>> playerIdtoHistoryMap_) {
-        CommonFunctions.playerIdtoHistoryMap_ = playerIdtoHistoryMap_;
-    }
 }

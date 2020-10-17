@@ -71,16 +71,16 @@ public class MainActivity extends AppCompatActivity {
 
         // Add 2 Fragments
 
+        // Leader board Fragment
+        LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
+        adapter.addFragment(leaderboardFragment, "LEADERBOARD", 0);
+        leaderboardFragment.setArguments(bundle);
+        tabLayout.addTab(tabLayout.newTab().setText(adapter.getPageTitle(0)));
+
         // Teams Fragment
         TeamsFragment teamsFragment = new TeamsFragment();
         teamsFragment.setArguments(bundle);
-        adapter.addFragment(teamsFragment, "TEAMS", 0);
-        tabLayout.addTab(tabLayout.newTab().setText(adapter.getPageTitle(0)));
-
-        // Leader board Fragment
-        LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
-        adapter.addFragment(leaderboardFragment, "LEADERBOARD", 1);
-        leaderboardFragment.setArguments(bundle);
+        adapter.addFragment(teamsFragment, "TEAMS", 1);
         tabLayout.addTab(tabLayout.newTab().setText(adapter.getPageTitle(1)));
         // viewpager
 
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
-                imageView.setImageResource(tab.getPosition() == 0 ? R.drawable.football : R.drawable.trophy );
+                imageView.setImageResource(tab.getPosition() == 1 ? R.drawable.football : R.drawable.trophy );
             }
 
             @Override
@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
         Log.e("ON adapter","LOADED");
         shimmerFrameLayout.stopShimmer();
         shimmerFrameLayout.setVisibility(View.GONE);
-        coordinatorLayout.setVisibility(View.VISIBLE);
+        viewPager.setVisibility(View.VISIBLE);
 
     }
 }

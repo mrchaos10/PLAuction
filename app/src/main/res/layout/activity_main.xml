@@ -4,17 +4,6 @@
     android:id="@+id/event_detail_relative"
     xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <com.facebook.shimmer.ShimmerFrameLayout android:id="@+id/shimmer_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:orientation="vertical"
-        >
-
-        <include layout="@layout/shimmer_main" />
-
-    </com.facebook.shimmer.ShimmerFrameLayout>
-
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -22,7 +11,6 @@
         android:id="@+id/main_coordinate"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="invisible"
         android:fitsSystemWindows="true">
 
 
@@ -120,9 +108,18 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+        <com.facebook.shimmer.ShimmerFrameLayout android:id="@+id/shimmer_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            >
+            <include layout="@layout/shimmer_main" />
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
+            android:visibility="visible"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
