@@ -1,6 +1,7 @@
 package com.example.plauction.Adapters;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
     private GameWeekAdapter gameWeekAdapter;
     private Activity activity;
     private String[] teams=new String[]{"Arsenal","Aston Villa","Brighton","Burnley","Chelsea", "Crystal Palace","Everton","Fulham","Leicester","Leeds","Liverpool", "Man City","Man Utd","Newcastle United","Sheffield United","Southampton","Spurs","West Bromwich","West Ham","Wolves"};
+    private int[] colors= new int[]{Color.RED,Color.parseColor("#670E36"),Color.parseColor("#0057B8"),Color.parseColor("#6C1D45"),Color.parseColor("#034694"),Color.parseColor("#C4122E"),Color.parseColor("#003399"),Color.parseColor("#CC0000"),Color.parseColor("#003090"),Color.parseColor("#FFCD00"),Color.parseColor("#C8102E"),Color.parseColor("#6CABDD"),Color.parseColor("#DA291C"),Color.parseColor("#241F20"),Color.parseColor("#EE2737"),Color.parseColor("#D71920"),Color.parseColor("#132257"),Color.parseColor("#122F67"),Color.parseColor("#7A263A"),Color.parseColor("#FDB913")};
     public PlayersAdapter(Activity activity, List<PlayerInfoEntity> selectedTeamPlayers, Map<Integer, ElementsEntity> elements){
         this.activity=activity;
         this.elements=elements;
@@ -61,6 +63,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
         holder.playerPrice.setText(player.getAmountBought().toString());
         holder.playerTotalPoints.setText(element.getTotal_points().toString());
         holder.playerClub.setText(teams[element.getTeam()-1]);
+        holder.playerClub.setBackgroundColor(colors[element.getTeam()-1]);
         RequestOptions options = new RequestOptions()
                 .placeholder(R.drawable.player_image)
                 .error(R.drawable.player_image);
