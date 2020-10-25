@@ -174,7 +174,7 @@ public class CommonFunctions {
                     sum+=0;
                     continue;
                 }
-                TransferEntity transfer=player.getTransfers();
+                TransferEntity transfer=player.getTransfer();
                 if(transfer!=null){
                     // decide start and end
                     int start = transfer.getIn() == 0 ? 0 : transfer.getIn() - 1;

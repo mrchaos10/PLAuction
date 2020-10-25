@@ -79,7 +79,7 @@
 
         <LinearLayout
             android:id="@+id/PlayInfoLinearLayout"
-            android:layout_width="220dp"
+            android:layout_width="160dp"
             android:layout_height="100dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
@@ -172,7 +172,42 @@
 
         </LinearLayout>
 
-        
+        <LinearLayout
+            android:id="@+id/PlayerTransferStatusLayout"
+            android:layout_width="40dp"
+            android:layout_height="80dp"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toEndOf="@+id/PlayInfoLinearLayout"
+            app:layout_constraintTop_toTopOf="@+id/guideline_h_4"
+            tools:ignore="MissingConstraints">
+
+
+            <LinearLayout
+                android:id="@+id/PlayerTransferStatuslinearLayout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="8"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/playerTransferStatusIn"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_margin="1dp"
+                    app:autoSizeTextType="uniform" />
+
+                <TextView
+                    android:id="@+id/playerTransferStatusOut"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_margin="1dp"
+                    app:autoSizeTextType="uniform" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_v_96"

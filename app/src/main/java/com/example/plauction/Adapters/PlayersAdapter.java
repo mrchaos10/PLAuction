@@ -31,6 +31,8 @@ import com.example.plauction.RestClientImpl.RESTClientImplementation;
 import java.util.List;
 import java.util.Map;
 
+import static java.sql.Types.NULL;
+
 
 public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHolder> {
     private List<PlayerInfoEntity> selectedTeamPlayers;
@@ -65,11 +67,19 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
         holder.playerTotalPoints.setText(element.getTotal_points().toString());
         holder.playerClub.setText(teams[element.getTeam()-1]);
         holder.playerClub.setBackgroundColor(colors[element.getTeam()-1]);
+        int In=0,out=0;
+        if(player.getTransfer()!=null) {
+                In = player.getTransfer().getIn();
+                holder.playerTransferStatusIn.setText("In: "+String.valueOf(In));
+                out = player.getTransfer().getOut();
+                holder.playerTransferStatusOut.setText("Out: "+String.valueOf(out));
+        }
         RequestOptions options = new RequestOptions()
                 .placeholder(R.drawable.player_image)
                 .error(R.drawable.player_image);
         Glide.with(holder.playerImage.getContext()).load(Constants.PLAYER_IMAGE_URL+element.getPhoto().replace(".jpg",".png")).apply(options).into(holder.playerImage);
-   }
+
+    }
 
     @Override
     public int getItemCount() {
@@ -89,6 +99,8 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
         private ConstraintLayout playersLiveLayout;
         private NestedScrollView playersGwDetails;
         private RecyclerView playersGwRecyclerView;
+        private TextView playerTransferStatusIn;
+        private TextView playerTransferStatusOut;
         private List<HistoryEntity> history;
         public ViewHolder(View itemView) {
             super(itemView);
@@ -102,6 +114,8 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
             playerPrice=(TextView) itemView.findViewById(R.id.playerPrice);
             playerClub=(TextView) itemView.findViewById(R.id.playerClub);
             playerTotalPoints=(TextView) itemView.findViewById(R.id.playerTotalPoints);
+            playerTransferStatusIn=(TextView)itemView.findViewById(R.id.playerTransferStatusIn);
+            playerTransferStatusOut=(TextView)itemView.findViewById(R.id.playerTransferStatusOut);
             playerClub=(TextView) itemView.findViewById(R.id.playerClub);
             playersLiveLayout.setOnClickListener(new View.OnClickListener() {
                 @Override

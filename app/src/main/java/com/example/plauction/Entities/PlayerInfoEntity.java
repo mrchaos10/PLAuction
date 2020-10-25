@@ -4,14 +4,14 @@ public class PlayerInfoEntity {
     String playerName;
     Integer playerId;
     Float amountBought;
-    TransferEntity transfers;
+    TransferEntity transfer;
 
-    public TransferEntity getTransfers() {
-        return transfers;
+    public TransferEntity getTransfer() {
+        return transfer;
     }
 
-    public void setTransfers(TransferEntity transfers) {
-        this.transfers = transfers;
+    public void setTransfer(TransferEntity transfer) {
+        this.transfer = transfer;
     }
 
     public String getPlayerName() {
