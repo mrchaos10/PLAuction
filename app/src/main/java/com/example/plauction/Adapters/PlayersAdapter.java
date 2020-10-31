@@ -70,9 +70,9 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
         int In=0,out=0;
         if(player.getTransfer()!=null) {
                 In = player.getTransfer().getIn();
-                holder.playerTransferStatusIn.setText("In: "+String.valueOf(In));
+                holder.playerTransferStatusIn.setText(""+String.valueOf(In));
                 out = player.getTransfer().getOut();
-                holder.playerTransferStatusOut.setText("Out: "+String.valueOf(out));
+                holder.playerTransferStatusOut.setText(""+String.valueOf(out));
         }
         RequestOptions options = new RequestOptions()
                 .placeholder(R.drawable.player_image)
