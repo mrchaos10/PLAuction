@@ -12,6 +12,16 @@ public class ElementsEntity {
     Integer id;
     Integer element_type;
 
+    public String getWeb_name() {
+        return web_name;
+    }
+
+    public void setWeb_name(String web_name) {
+        this.web_name = web_name;
+    }
+
+    String web_name;
+
     public Integer getElement_type() {
         return element_type;
     }

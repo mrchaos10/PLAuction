@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plauction.Activities.MainActivity;
 import com.example.plauction.Adapters.LeaderboardAdapter;
+import com.example.plauction.Common.CommonFunctions;
 import com.example.plauction.Entities.AuctionTeamsEntity;
 import com.example.plauction.R;
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -40,6 +43,8 @@ public class LeaderboardFragment extends Fragment {
     private ArrayList<AuctionTeamsEntity> auctionTeamsEntitiesList;
     private  AuctionTeamsEntity[] auctionTeamsEntities;
     private Gson gson=new Gson();
+    private TextView tvSeekBarProgress;
+    private LeaderboardAdapter leaderboardAdapter;
 
     @Override
     public void onAttach(Context context) {
@@ -71,6 +76,37 @@ public class LeaderboardFragment extends Fragment {
     }
 
 
+    SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            tvSeekBarProgress.setText(progress != 0 ? "GW: " + progress : "TOTAL");
+            //textView.setY(100); just added a value set this properly using screen with height aspect ratio , if you do not set it by default it will be there below seek bar
+            updateLeaderBoard(progress);
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+        }
+    };
+
+    private void updateLeaderBoard(final int progress)
+    {
+        Collections.sort(auctionTeamsEntitiesList, new Comparator<AuctionTeamsEntity>() {
+            @Override
+            public int compare(AuctionTeamsEntity o1, AuctionTeamsEntity o2) {
+                return Integer.compare(o2.getTotalPoints(progress), o1.getTotalPoints(progress));
+            }
+        });
+        leaderboardAdapter = new LeaderboardAdapter(auctionTeamsEntitiesList,progress);
+        recyclerView.setAdapter(leaderboardAdapter);
+        leaderboardAdapter.notifyDataSetChanged();
+
+    }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -78,27 +114,22 @@ public class LeaderboardFragment extends Fragment {
 
         inflated_frag = inflater.inflate(R.layout.fragment_leaderboard, container, false);
 
-        //relativeLayout = (RelativeLayout)activity.findViewById(R.id.relati);
-
-        recyclerView = (RecyclerView)inflated_frag.findViewById(R.id.leaderboard_recyclerview);
-
         String auctionTeamsString=getArguments().getString("AUCTION_TEAMS");
         Type listType = new TypeToken<List<AuctionTeamsEntity>>() {}.getType();
         auctionTeamsEntitiesList=gson.fromJson(auctionTeamsString,listType);
-        Collections.sort(auctionTeamsEntitiesList, new Comparator<AuctionTeamsEntity>() {
-            @Override
-            public int compare(AuctionTeamsEntity o1, AuctionTeamsEntity o2) {
-                return Integer.valueOf(o2.getTotalPoints()).compareTo(Integer.valueOf(o1.getTotalPoints()));
-            }
-        });
-
         auctionTeamsEntities = new AuctionTeamsEntity[auctionTeamsEntitiesList.size()];
         auctionTeamsEntities=  auctionTeamsEntitiesList.toArray(auctionTeamsEntities);
 
+        tvSeekBarProgress = inflated_frag.findViewById(R.id.seekbar_progress);
+        recyclerView = (RecyclerView)inflated_frag.findViewById(R.id.leaderboard_recyclerview);
+        SeekBar seekBar = inflated_frag.findViewById(R.id.slider_leaderboard);
+        seekBar.setOnSeekBarChangeListener(seekBarChangeListener);
+
+        // Set seek bar min:0 and max: gw
+        seekBar.setMax(CommonFunctions.getMaxGw());
 
 
-        LeaderboardAdapter leaderboardAdapter = new LeaderboardAdapter(auctionTeamsEntitiesList);
-        recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
+        //recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(leaderboardAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 

@@ -21,9 +21,11 @@ public class LeaderboardAdapter extends
         RecyclerView.Adapter<LeaderboardAdapter.ViewHolder> {
 
     private List<AuctionTeamsEntity> auctionTeamsEntityList;
+    public  int gw;
 
-    public LeaderboardAdapter(List<AuctionTeamsEntity> auctionTeamsEntityList) {
+    public LeaderboardAdapter(List<AuctionTeamsEntity> auctionTeamsEntityList,int gw) {
         this.auctionTeamsEntityList = auctionTeamsEntityList;
+        this.gw = gw;
     }
 
 
@@ -34,7 +36,6 @@ public class LeaderboardAdapter extends
 
         public TextView rankTextView,teamNameTextView, pointsTextView;
         public RelativeLayout relativeLayout;
-
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -47,8 +48,7 @@ public class LeaderboardAdapter extends
 
         @Override
         public void onClick(View view) {
-            Log.i("CLICKED","CLICKED");
-            CommonFunctions.getTeamComposition(auctionTeamsEntityList.get(getAdapterPosition()), view.getContext(), getAdapterPosition()+1).show();
+            CommonFunctions.getTeamComposition(auctionTeamsEntityList.get(getAdapterPosition()), view.getContext(), getAdapterPosition()+1, gw).show();
         }
     }
 
@@ -73,7 +73,7 @@ public class LeaderboardAdapter extends
 
         rankTextView.setText(Integer.toString(position+1));
         teamNameTextView.setText(auctionTeamsEntity.getTeamName());
-        pointsTextView.setText(Integer.toString(auctionTeamsEntity.getTotalPoints())+" pts");
+        pointsTextView.setText(Integer.toString(auctionTeamsEntity.getTotalPoints(this.gw))+" pts");
 
     }
 

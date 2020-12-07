@@ -2,6 +2,7 @@ package com.example.plauction.Constants;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -19,6 +20,7 @@ public class Constants {
     public static final String BASE_PLAYER_INFO_URL="https://fantasy.premierleague.com/api/element-summary/";
     public static final String PLAYER_IMAGE_URL="https://resources.premierleague.com/premierleague/photos/players/110x140/p";
     public static final String ELEMENT_SUMMARIES_URI="https://pl-players-history.herokuapp.com/";
+    public static final Paint SeekBarPaint = new Paint();
     //public static final String ELEMENT_SUMMARIES_URI="http://192.168.43.210:5000/";
     public static final ObjectMapper mapper = new ObjectMapper()
             .configure(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT, true)

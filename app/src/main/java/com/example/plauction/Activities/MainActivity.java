@@ -24,6 +24,7 @@ import com.example.plauction.Entities.BootstrapEntity;
 import com.example.plauction.Entities.ElementSummariesEntity;
 import com.example.plauction.Entities.ElementsEntity;
 import com.example.plauction.Entities.HistoryEntity;
+import com.example.plauction.Fragments.PlayerListFragment;
 import com.example.plauction.Fragments.TeamsFragment;
 import com.example.plauction.Fragments.LeaderboardFragment;
 import com.example.plauction.R;
@@ -82,6 +83,13 @@ public class MainActivity extends AppCompatActivity {
         teamsFragment.setArguments(bundle);
         adapter.addFragment(teamsFragment, "TEAMS", 1);
         tabLayout.addTab(tabLayout.newTab().setText(adapter.getPageTitle(1)));
+
+        // PlayerList Fragment
+        PlayerListFragment playerListFragment = new PlayerListFragment();
+        playerListFragment.setArguments(bundle);
+        adapter.addFragment(playerListFragment,"PLAYERS", 2);
+        tabLayout.addTab(tabLayout.newTab().setText(adapter.getPageTitle(2)));
+
         // viewpager
 
         viewPager.setAdapter(adapter);
@@ -142,6 +150,8 @@ public class MainActivity extends AppCompatActivity {
                                             //String summaries=gson.toJson(elementSummaryEntity,ElementSummariesEntity.class);
                                             // Set map in common functions -- Use CommonFunctions.getElementSummaries to get map again
                                             CommonFunctions.setElementSummaries(elementSummaryEntity);
+                                            Map.Entry<String,List<HistoryEntity>> entry = elementSummaryEntity.entrySet().iterator().next();
+                                            CommonFunctions.setMaxGw(entry.getValue().size());
                                             Log.i("SUMMARY SIZE", elementSummaryEntity.size()+"");
                                             loadViewPager();
                                             CommonFunctions.makeSnackBar("Teams Data Fetched",coordinatorLayout).show();

@@ -45,8 +45,8 @@ public class AuctionTeamsEntity {
         this.transferEntities = transferEntities;
     }
 
-    public int getTotalPoints() {
-            return CommonFunctions.getGameWeekAggSum(getPlayerInfo());
+    public int getTotalPoints(int gw) {
+            return CommonFunctions.getGameWeekAggSum(getPlayerInfo(), gw);
         }
 }
 

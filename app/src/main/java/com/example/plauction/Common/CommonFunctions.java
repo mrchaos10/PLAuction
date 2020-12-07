@@ -30,6 +30,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +40,9 @@ public class CommonFunctions {
 
     private  static Map<Integer, ElementsEntity> playerIdToElementMap_;
     private  static Map<String, List<HistoryEntity>> elementSummaries;
+    private  static Integer maxGw;
+    private  static  Map<String, Map<Integer, HistoryEntity>> playerRoundPoints_=new HashMap<>();
+
 
 
     public static Map<String, List<HistoryEntity>> getElementSummaries() {
@@ -46,6 +51,17 @@ public class CommonFunctions {
 
     public static void setElementSummaries(Map<String, List<HistoryEntity>> elementSummaries) {
         CommonFunctions.elementSummaries = elementSummaries;
+        for (Map.Entry<String,  List<HistoryEntity>> entry : elementSummaries.entrySet()) {
+            String playerId = entry.getKey();
+            List<HistoryEntity> historyEntities = entry.getValue();
+            Map<Integer,  HistoryEntity> roundPts = new HashMap<>();
+            for(HistoryEntity historyEntity: historyEntities)
+            {
+                roundPts.put(historyEntity.getRound(), historyEntity);
+            }
+            playerRoundPoints_.put(playerId, roundPts);
+        }
+
     }
     // General toasts ..............
 
@@ -152,8 +168,9 @@ public class CommonFunctions {
         return sum;
     }
 
-    public static int getGameWeekAggSum(ArrayList<PlayerInfoEntity> playerinfoArrayList)
+    public static int getGameWeekAggSum(ArrayList<PlayerInfoEntity> playerinfoArrayList, int gw)
     {
+
         if(elementSummaries == null || elementSummaries.size() == 0)
             return 0;
 
@@ -174,18 +191,50 @@ public class CommonFunctions {
                     sum+=0;
                     continue;
                 }
-                TransferEntity transfer=player.getTransfer();
-                if(transfer!=null){
-                    // decide start and end
-                    int start = transfer.getIn() == 0 ? 0 : transfer.getIn() - 1;
-                    int end = transfer.getOut() == 0 ? gwHistory.size() - 1  : transfer.getOut() - 1;
-                    for(int i=start;i<=end;i++){
-                        sum+=gwHistory.get(i).getTotal_points();
+                if(gw != 0)
+                {
+                    Map<Integer, HistoryEntity> roundPts = playerRoundPoints_.get(player.getPlayerId()+"");
+                    if(roundPts == null){
+                        sum+=0;
+                        continue;
                     }
+                    TransferEntity transfer=player.getTransfer();
+                    if(transfer!=null){
+                        int start = transfer.getIn() == 0 ? 0 : transfer.getIn() - 1;
+                        int end = transfer.getOut() == 0 ? gwHistory.size() - 1 : transfer.getOut() - 1;
+                        if(gw - 1 < start || gw-1 >end )
+                        {
+                            continue;
+                        }
+                    }
+                    if(roundPts.get(gw) == null)
+                        sum+=0;
+                    else
+                        sum += roundPts.get(gw).getTotal_points();
                 }
-                //If no transfer exists for a player simply adding the total points and moving onto the next player
-                else{
-                    sum+=playerIdToElementMap_.get(player.getPlayerId()).getTotal_points();
+                else
+                {
+                    TransferEntity transfer=player.getTransfer();
+                    if(transfer!=null){
+                        // decide start and end
+                        Map<Integer, HistoryEntity> roundPts = playerRoundPoints_.get(player.getPlayerId()+"");
+                        if(roundPts == null){
+                            sum+=0;
+                            continue;
+                        }
+                        int start = transfer.getIn() == 0 ? 0 : transfer.getIn() - 1;
+                        int end = transfer.getOut() == 0 ? gwHistory.size() - 1 : transfer.getOut() - 1;
+                        for (int i = start; i <= end; i++) {
+                            if(roundPts.get(i) == null)
+                                sum+=0;
+                            else
+                                sum += roundPts.get(i).getTotal_points();
+                        }
+                    }
+                    //If no transfer exists for a player simply adding the total points and moving onto the next player
+                    else{
+                        sum+=playerIdToElementMap_.get(player.getPlayerId()).getTotal_points();
+                    }
                 }
             }
         }
@@ -245,7 +294,7 @@ public class CommonFunctions {
     }
 
 
-    public static AlertDialog getTeamComposition(final AuctionTeamsEntity auctionTeamsEntity, final Context context, int composition){
+    public static AlertDialog getTeamComposition(final AuctionTeamsEntity auctionTeamsEntity, final Context context, int composition, int gw){
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View dialogView = layoutInflater.inflate(R.layout.alert_teamcomp, null);
 
@@ -265,10 +314,10 @@ public class CommonFunctions {
         AuctionTeamsEntity gks  = filterPlayers(auctionTeamsEntity,1);
 
         List<PieEntry> teamCompositionEntities = new ArrayList<>();
-        teamCompositionEntities.add(new PieEntry(getGameWeekAggSum(fwds.getPlayerInfo()),"FORWARDS"));
-        teamCompositionEntities.add(new PieEntry(getGameWeekAggSum(mids.getPlayerInfo()),"MIDFIELDERS"));
-        teamCompositionEntities.add(new PieEntry(getGameWeekAggSum(defs.getPlayerInfo()),"DEFENDERS"));
-        teamCompositionEntities.add(new PieEntry(getGameWeekAggSum(gks.getPlayerInfo()),"KEEPERS"));
+        teamCompositionEntities.add(new PieEntry(getGameWeekAggSum(fwds.getPlayerInfo(),gw),"FORWARDS"));
+        teamCompositionEntities.add(new PieEntry(getGameWeekAggSum(mids.getPlayerInfo(),gw),"MIDFIELDERS"));
+        teamCompositionEntities.add(new PieEntry(getGameWeekAggSum(defs.getPlayerInfo(),gw),"DEFENDERS"));
+        teamCompositionEntities.add(new PieEntry(getGameWeekAggSum(gks.getPlayerInfo(),gw),"KEEPERS"));
         populatePieChart(chart, teamCompositionEntities);
 
         chart.postInvalidate();
@@ -277,7 +326,7 @@ public class CommonFunctions {
 
         Button confirm = dialogView.findViewById(R.id.confirm_reg);
 
-        rank.setText("RANK - " + composition + ", POINTS - " + getTeamTotalSum(auctionTeamsEntity.getPlayerInfo()));
+        rank.setText("RANK - " + composition + ", POINTS - " + auctionTeamsEntity.getTotalPoints(gw) );
 
         alertDialogBuilder.setView(dialogView);
 
@@ -292,4 +341,12 @@ public class CommonFunctions {
         return alertDialog;
     }
 
+
+    public static void setMaxGw(Integer maxGw) {
+        CommonFunctions.maxGw = maxGw;
+    }
+
+    public static Integer getMaxGw() {
+        return CommonFunctions.maxGw;
+    }
 }

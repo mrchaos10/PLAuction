@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plauction.Activities.MainActivity;
 import com.example.plauction.Adapters.PlayersAdapter;
+import com.example.plauction.Adapters.PlayersListAdapter;
 import com.example.plauction.Adapters.TeamListSpinnerAdapter;
 import com.example.plauction.Common.CommonFunctions;
 import com.example.plauction.Entities.AuctionTeamsEntity;
@@ -82,7 +83,7 @@ public class TeamsFragment extends Fragment {
                 else {
                     // SELECTION LOGIC MAKE POST VOLLEY
                     //Log.i("SUM", CommonFunctions.getTeamTotalSum(selectedTeamPlayers)+"");
-                    teamPoints.setText(selectedTeamName+" Points : "+CommonFunctions.getTeamTotalSum(selectedTeamPlayers));
+                    teamPoints.setText(selectedTeamName+" Points : "+CommonFunctions.getGameWeekAggSum(selectedTeamPlayers,0));
                     playersNestedScrollView.setVisibility(View.VISIBLE);
                     Collections.sort(selectedTeamPlayers, new Comparator<PlayerInfoEntity>() {
                         @Override
@@ -95,7 +96,6 @@ public class TeamsFragment extends Fragment {
                     playerRecyclerView.setAdapter(playersAdapter);
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 

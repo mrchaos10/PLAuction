@@ -69,10 +69,10 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
         holder.playerClub.setBackgroundColor(colors[element.getTeam()-1]);
         int In=0,out=0;
         if(player.getTransfer()!=null) {
-                In = player.getTransfer().getIn();
-                holder.playerTransferStatusIn.setText(""+String.valueOf(In));
-                out = player.getTransfer().getOut();
-                holder.playerTransferStatusOut.setText(""+String.valueOf(out));
+            In = player.getTransfer().getIn();
+            holder.playerTransferStatusIn.setText(""+String.valueOf(In));
+            out = player.getTransfer().getOut();
+            holder.playerTransferStatusOut.setText(""+String.valueOf(out));
         }
         RequestOptions options = new RequestOptions()
                 .placeholder(R.drawable.player_image)
@@ -137,7 +137,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
                     }
 
                     // Below call is now not required as we have fetched all element summaries
-                    
+
                     /*RESTClientImplementation.getElementSummary(new ElementHistoryEntity.OnListLoad() {
                         @Override
                         public void onListLoaded(int code, ElementHistoryEntity elementHistoryEntity, VolleyError volleyError) {
